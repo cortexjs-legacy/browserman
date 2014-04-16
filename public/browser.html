@@ -22,7 +22,8 @@
 		});
 
 		socket.on('job', function (job) {
-			window.open(job.url);
+			var w=window.open(job.url);
+			injectScript(w.document,'http://localhost:3000/public/test.js')
 		});
 
 		socket.on('disconnect', function () {
@@ -30,6 +31,16 @@
 	  	});
 
 	})
+
+	function injectScript(doc,url) {
+		var script = doc.createElement('script');
+		script.type = 'text/javascript';
+		script.async = true;
+		script.src = url;
+		var container = doc.getElementsByTagName('head')[0];
+		container.appendChild(script);
+	}
+
 </script>
 </head>
 
