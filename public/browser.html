@@ -2,6 +2,9 @@
 <html ng-app="app">
 <head>
 <script  type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script  type="text/javascript" src="/public/js/Math.uuid.js"></script>
+<script  type="text/javascript" src="/public/js/detector.js"></script>
+
 <script  type="text/javascript">
 	
 	var socket = io.connect('http://localhost:3000/worker');
@@ -9,10 +12,17 @@
 	socket.on('connect',function(){
 		console.log('connected');
 
-		socket.emit('register',1);
+		var guid = Math.uuid(8, 16);
+		socket.emit('register',{
+			id:guid,
+			browser:{
+				name:bowser.name,
+				version:bowser.version
+			}
+		});
 
 		socket.on('job', function (job) {
-			 	
+			window.open(job.url);
 		});
 
 		socket.on('disconnect', function () {

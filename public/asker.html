@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<script  type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script  type="text/javascript">
+	
+	var socket = io.connect('http://localhost:3000/asker');
+
+	socket.on('connect',function(){
+		console.log('connected');
+
+		socket.emit('test',{
+			url:'http://www.baidu.com'
+		});
+
+		socket.on('done', function (job) {
+			
+		});
+
+		socket.on('disconnect', function () {
+			
+	  	});
+
+	})
+</script>
+</head>
+
+<body ng-controller="Controller">
+
+</body>
+</html>

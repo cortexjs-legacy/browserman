@@ -2,6 +2,7 @@ var express = require('express');
 var http = require('http');
 var logger = require('./lib/logger');
 var Worker = require('./lib/worker');
+var Job = require('./lib/job');
 var scheduler = require('./lib/scheduler');
 var path = require('path');
 
