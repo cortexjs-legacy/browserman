@@ -4,42 +4,51 @@
 <script  type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script  type="text/javascript" src="/public/js/Math.uuid.js"></script>
 <script  type="text/javascript" src="/public/js/detector.js"></script>
+<script  type="text/javascript" src="/public/js/angular.js"></script>
 
 <script  type="text/javascript">
-	
-	var socket = io.connect('http://localhost:3000/worker');
+	var app=angular.module('app', []);
+	function Controller($scope,$http){
+		var socket = io.connect('http://localhost:3000/worker');
 
-	socket.on('connect',function(){
-		console.log('connected');
+		socket.on('connect',function(){
+			console.log('connected');
 
-		var guid = Math.uuid(8, 16);
-		socket.emit('register',{
-			id:guid,
-			browser:{
-				name:bowser.name,
-				version:bowser.version
-			}
-		});
+			var guid = Math.uuid(8, 16);
+			socket.emit('register',{
+				id:guid,
+				browser:{
+					name:bowser.name,
+					version:bowser.version
+				}
+			});
 
-		socket.on('job', function (job) {
-			var w=window.open(job.url);
-			injectScript(w.document,'http://localhost:3000/public/test.js')
-		});
+			socket.on('job', function (job) {
+				$http.get('/proxy?url='+job.url)
+					.success(function(data){
+						var doc=window.open().document;
+						doc.write(data);
+						injectScript(doc,'http://localhost:3000/socket.io/socket.io.js')
+						injectScript(doc,'http://localhost:3000/public/tester.js')
+					})
+				
+			});
 
-		socket.on('disconnect', function () {
-			
-	  	});
+			socket.on('disconnect', function () {
+				
+		  	});
 
-	})
+		})
 
-	function injectScript(doc,url) {
-		var script = doc.createElement('script');
-		script.type = 'text/javascript';
-		script.async = true;
-		script.src = url;
-		var container = doc.getElementsByTagName('head')[0];
-		container.appendChild(script);
+		function injectScript(doc,url) {
+			var script = doc.createElement('script');
+			script.type = 'text/javascript';
+			script.src = url;
+			var container = doc.getElementsByTagName('head')[0];
+			container.appendChild(script);
+		}
 	}
+	
 
 </script>
 </head>

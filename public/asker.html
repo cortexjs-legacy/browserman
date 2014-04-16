@@ -6,7 +6,7 @@
 <script  type="text/javascript" src="/public/js/angular.js"></script>
 <script  type="text/javascript">
 	var app=angular.module('app', []);
-	function Controller($scope){
+	function Controller($scope,$http){
 		var socket = io.connect('http://localhost:3000/asker');
 
 		socket.on('connect',function(){

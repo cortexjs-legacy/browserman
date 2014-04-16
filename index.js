@@ -8,8 +8,14 @@ var path = require('path');
 
 var app = express();
 app.configure(function() {
+    app.use(express.bodyParser());  
     app.use('/public',express.static(path.join(__dirname, 'public/')));
+    app.use(app.router);
 });
+
+app.get('/proxy',function(req,res){
+    require('request').get(req.query.url).pipe(res);
+})
 
 var server = http.createServer(app);
 
@@ -57,7 +63,7 @@ io.of('/asker').on('connection', function(socket) {
     });
 });
 
-// test page opened by browser
+// page opened by browser
 io.of('/tester').on('connection', function(socket) {
 
     socket.on('done', function(data) {
