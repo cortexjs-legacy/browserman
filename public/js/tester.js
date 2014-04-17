@@ -19,7 +19,7 @@
 				result:result
 			});
 			window.close();
-		},5000)
+		},3000)
 
 		
 		socket.on('disconnect', function() {
@@ -28,8 +28,17 @@
 
 	});
 
-	window.onerror=function(err){
-		result.push(err);
+	console.error=function(error){
+		result.push({
+	    	error:error
+		});
 	}
+
+	window.onerror = function(error, url, line) {
+	    result.push({
+	    	error:error,
+	    	line:line
+	    });
+	};
 	
 })()
