@@ -13,15 +13,15 @@ gulp.task('stylus', function(){
 });
 
 gulp.task('jade', function(){
-    gulp.src(["./public/jade/**/*.jade"])
+    gulp.src(["./public/views/*.jade"])
         .pipe(jade())
-        .pipe(gulp.dest("./public/"));
+        .pipe(gulp.dest("./public/html"));
 
 });
 
 
 gulp.task('watch', function () {
-  gulp.watch(["./public/jade/**/*.jade"], ['jade']);
+  gulp.watch(["./public/views/**/*.jade"], ['jade']);
   gulp.watch(["./public/css/**/*.styl"], ['stylus']);
 });
 
