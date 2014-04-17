@@ -2,6 +2,7 @@
 <html ng-app="app">
 <head>
 	<link href="/public/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/public/css/animate.css" rel="stylesheet" />
 	<style type="text/css">
 
 		body{
@@ -24,6 +25,10 @@
 			width:900px;
 		}
 
+		.browser{
+			 -webkit-animation: fadeInDown 1s;
+		}
+
 		.browser .name{
 			font-size:30px;
 		}
@@ -35,7 +40,7 @@
 		}
 
 		input[type=text]{
-			height: 50px;
+			height: 45px;
 			font-size:18px;
 			font-family: "Helvetica Neue";
 			font-weight: lighter;
@@ -43,7 +48,7 @@
 		}
 
 		.btn{
-			height: 50px;
+			height: 45px;
 			width:60px;
 			font-size:18px;
 			font-family: "Helvetica Neue";
@@ -51,9 +56,11 @@
 		}
 
 	</style>
-	<script  type="text/javascript" src="/socket.io/socket.io.js"></script>
-	<script  type="text/javascript" src="/public/js/angular.js"></script>
-	<script  type="text/javascript">
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/public/js/angular.js"></script>
+	<script type="text/javascript" src="/public/js/angular-animate.js"></script>
+
+	<script type="text/javascript">
 	var app=angular.module('app', []);
 	function Controller($scope,$http){
 		var socket = io.connect('http://localhost:9000/asker');
@@ -103,7 +110,7 @@
 
 	<div class="container" style="margin-top:50px;">
 		<div class="search-area">
-			<input type="text" class="form-control ng-pristine ng-valid" ng-model="searchKey" placeholder="search">
+			<input type="text" class="form-control ng-pristine ng-valid" ng-model="searchKey" placeholder="filter">
 
 		</div>
 		<div class="browser well well-lg" ng-repeat="(id,worker) in workers|filter:{worker.browser.name:searchKey}" ng-mouseenter="showPanel(id)" ng-mouseleave="hidePanel()">
