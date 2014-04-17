@@ -2,18 +2,23 @@ extends layout/default.jade
 
 block head  
 	title Dashboard
+	+css("/public/css/lib/bootstrap.min.css")
+	+css("/public/css/lib/animate.css")
 	+css("/public/css/admin.css")
 	+js("/socket.io/socket.io.js")
-	+js("/public/js/angular.js")
+	+js("/public/js/lib/angular.js")
 	+js("/public/js/admin.js")
+	
 block content  
-	ul.container(style='margin-top:50px;')
-		li.browser(ng-repeat='(id,worker) in workers', ng-mouseenter='showPanel(id)', ng-mouseleave='hidePanel()')
-			form.form-inline(role='form')
+	.container
+		.search-area
+			input.form-control.ng-pristine.ng-valid(type="text", ng-model="searchKey", placeholder="search")
+		.browser.well.well-lg(ng-repeat="(id,worker) in workers | filter:{worker.browser.name:searchKey}", ng-mouseenter="showPanel(id)", ng-mouseleave="hidePanel()")
+			form.form-inline(role="form")
 				.form-group
 					span.name {{worker.browser.name}}
 					span.version ({{worker.browser.version}})
-				.form-group.pull-right(ng-show='showPanelStatus[id]')
-					button.btn.btn-default.test-btn(type='submit', ng-click='test(id)') Test
-				.form-group.pull-right(ng-show='showPanelStatus[id]', style='padding-right:20px;')
-					input.form-control.url-input(ng-model='url[id]', type='text', placeholder='Enter URL')
+				.form-group.test-btn-area.pull-right()
+					button.btn.btn-default.test-btn(type="submit", ng-click="test(id)") Test
+				.form-group.pull-right()
+					input.form-control.url-input(ng-model="url[id]", type="text", placeholder="Enter URL")

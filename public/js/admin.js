@@ -6,11 +6,11 @@ var app=angular.module('app', []);
 			console.log('connected');			
 
 			socket.on('done', function (data) {
-				alert('done:'+data.result[0]);
+				alert(JSON.stringify(data.result));
 			});
 
 			socket.on('disconnect', function () {
-				
+
 		  	});
 
 		});
