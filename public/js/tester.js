@@ -8,13 +8,15 @@
 
 	var socket = io.connect('http://localhost:9000/tester');
 
+	var result=[];
+
 	socket.on('connect', function() {
 		console.log('connected');
 
 		setTimeout(function(){
 			socket.emit('done',{
 				jobId:jobId,
-				result:['success']
+				result:result
 			});
 			window.close();
 		},5000)
@@ -27,7 +29,7 @@
 	});
 
 	window.onerror=function(err){
-		console.log(err);
+		result.push(err);
 	}
 	
 })()

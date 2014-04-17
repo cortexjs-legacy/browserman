@@ -15,7 +15,7 @@ gulp.task('stylus', function(){
 gulp.task('jade', function(){
     gulp.src(["./public/views/*.jade"])
         .pipe(jade())
-        .pipe(gulp.dest("./public/html"));
+        .pipe(gulp.dest("./public/html/"));
 
 });
 

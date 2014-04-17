@@ -1,1 +1,122 @@
-<html ng-app="app"> <head><title>Dashboard</title><link href="/public/css/admin.css" rel="stylesheet"/><script src="/socket.io/socket.io.js"></script><script src="/public/js/angular.js"></script><script src="/public/js/admin.js"></script></head><body ng-controller="Controller"><ul style="margin-top:50px;" class="container"><li ng-repeat="(id,worker) in workers" ng-mouseenter="showPanel(id)" ng-mouseleave="hidePanel()" class="browser"><form role="form" class="form-inline"><div class="form-group"><span class="name">{{worker.browser.name}}</span><span class="version">({{worker.browser.version}})</span></div><div ng-show="showPanelStatus[id]" class="form-group pull-right"><button type="submit" ng-click="test(id)" class="btn btn-default test-btn">Test</button></div><div ng-show="showPanelStatus[id]" style="padding-right:20px;" class="form-group pull-right"><input ng-model="url[id]" type="text" placeholder="Enter URL" class="form-control url-input"/></div></form></li></ul></body></html>
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<link href="/public/css/bootstrap.min.css" rel="stylesheet" />
+	<style type="text/css">
+
+		body{
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+		}
+
+		.search-area{
+			margin-bottom: 30px;
+		}
+
+		.search-area input[type=text]{
+			width:100%;
+		}
+
+		.container{
+			width:900px;
+		}
+
+		.browser .name{
+			font-size:30px;
+		}
+		.browser .version{
+			margin-right: 0px 10px;
+			font-size:26px;
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+		}
+
+		input[type=text]{
+			height: 40px;
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+			width: 300px;
+		}
+
+		.btn{
+			height: 40px;
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+		}
+
+	</style>
+	<script  type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script  type="text/javascript" src="/public/js/angular.js"></script>
+	<script  type="text/javascript">
+	var app=angular.module('app', []);
+	function Controller($scope,$http){
+		var socket = io.connect('http://localhost:9000/asker');
+
+		socket.on('connect',function(){
+			console.log('connected');			
+
+			socket.on('done', function (data) {
+				alert('done:'+data.result[0]);
+			});
+
+			socket.on('disconnect', function () {
+				
+		  	});
+
+		});
+
+		$scope.url={};
+
+		$scope.test=function(workerId){
+			socket.emit('test',{
+				url:$scope.url[workerId],
+				requirement:{
+					workerId:workerId
+				}
+			});
+		}
+
+		$http.get('/api/worker').success(function(data){
+			$scope.workers=data;
+		})
+
+		$scope.showPanel=function(id){
+            $scope.showPanelStatus={};
+            $scope.showPanelStatus[id]=true;
+        }
+
+        $scope.hidePanel=function(){
+            $scope.showPanelStatus={};
+        }
+	}
+	
+</script>
+</head>
+
+<body ng-controller="Controller">
+
+	<div class="container" style="margin-top:50px;">
+		<div class="search-area">
+			<input type="text" class="form-control ng-pristine ng-valid" ng-model="searchKey" placeholder="search">
+
+		</div>
+		<div class="browser well well-lg" ng-repeat="(id,worker) in workers|filter:{worker.browser.name:searchKey}" ng-mouseenter="showPanel(id)" ng-mouseleave="hidePanel()">
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<span class="name">{{worker.browser.name}}</span>
+					<span class="version">({{worker.browser.version}})</span>
+
+				</div>
+
+				<div ng-show="showPanelStatus[id]" class="form-group pull-right">
+					<button type="submit" ng-click="test(id)" class="btn btn-default test-btn">Test</button>
+				</div>
+				<div ng-show="showPanelStatus[id]" style="padding-right:10px;" class="form-group pull-right">
+					<input ng-model="url[id]" type="text" class="form-control url-input" placeholder="Enter URL"></div>
+
+			</form>
+		</div>
+
+	</div>
+</body>
+</html>
