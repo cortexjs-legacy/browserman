@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
-<link href="/public/css/bootstrap.min.css" rel="stylesheet" />
-<script  type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script  type="text/javascript" src="/public/js/angular.js"></script>
-<script  type="text/javascript">
+	<link href="/public/css/bootstrap.min.css" rel="stylesheet" />
+	<style type="text/css">
+
+		body{
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+		}
+		.browser .name{
+			font-size:30px;
+		}
+		.browser .version{
+			margin-right: 0px 10px;
+			font-size:26px;
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+		}
+
+		.browser .url-input{
+			height: 40px;
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+			width: 300px;
+		}
+
+		.browser .test-btn{
+			height: 40px;
+			font-family: "Helvetica Neue";
+			font-weight: lighter;
+		}
+	</style>
+	<script  type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script  type="text/javascript" src="/public/js/angular.js"></script>
+	<script  type="text/javascript">
 	var app=angular.module('app', []);
 	function Controller($scope,$http){
-		var socket = io.connect('http://localhost:3000/asker');
+		var socket = io.connect('http://localhost:9000/asker');
 
 		socket.on('connect',function(){
-			console.log('connected');
+			console.log('connected');			
 
-			
-
-			socket.on('done', function (job) {
-				
+			socket.on('done', function (data) {
+				alert('done:'+data.result[0]);
 			});
 
 			socket.on('disconnect', function () {
@@ -24,11 +51,29 @@
 
 		});
 
-		$scope.sendTest=function(){
+		$scope.url={};
+
+		$scope.test=function(workerId){
 			socket.emit('test',{
-				url:$scope.url
+				url:$scope.url[workerId],
+				requirement:{
+					workerId:workerId
+				}
 			});
 		}
+
+		$http.get('/api/worker').success(function(data){
+			$scope.workers=data;
+		})
+
+		$scope.showPanel=function(id){
+            $scope.showPanelStatus={};
+            $scope.showPanelStatus[id]=true;
+        }
+
+        $scope.hidePanel=function(){
+            $scope.showPanelStatus={};
+        }
 	}
 	
 </script>
@@ -36,13 +81,26 @@
 
 <body ng-controller="Controller">
 	<div class="container" style="margin-top:50px;">
+
+	<div class="browser well well-lg" ng-repeat="(id,worker) in workers" ng-mouseenter="showPanel(id)" ng-mouseleave="hidePanel()">
+
 		<form class="form-inline" role="form">
-			  <div class="form-group">
-			    <label class="sr-only" for="exampleInputEmail2">url</label>
-			    <input type="text" ng-model="url" class="form-control" id="" placeholder="Enter URL">
-			  </div>
-			  <button type="submit" ng-click="sendTest()" class="btn btn-default">test</button>
-			</form>
+			<div class="form-group">
+				<span class="name">{{worker.browser.name}}</span>
+				<span class="version">({{worker.browser.version}})</span>
+				
+			</div>
+			
+			<div ng-show="showPanelStatus[id]" class="form-group pull-right">
+				<button type="submit" ng-click="test(id)" class="btn btn-default test-btn">Test</button>
+			</div>
+			<div ng-show="showPanelStatus[id]" style="padding-right:20px;" class="form-group pull-right">
+				<input ng-model="url[id]" type="text" class="form-control url-input" placeholder="Enter URL">
+			</div>
+
+		</form>
 	</div>
+
+</div>
 </body>
 </html>
