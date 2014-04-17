@@ -1,4 +1,5 @@
 (function() {
+
 	function getURLParameter(name) {
 		return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 	}
@@ -16,7 +17,7 @@
 				result:['success']
 			});
 			window.close();
-		},3000)
+		},5000)
 
 		
 		socket.on('disconnect', function() {
@@ -24,4 +25,9 @@
 		});
 
 	});
+
+	window.onerror=function(err){
+		console.log(err);
+	}
+	
 })()
