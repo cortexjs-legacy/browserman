@@ -50,6 +50,11 @@ io.of('/worker').on('connection', function(socket) {
 // who asks for a test
 io.of('/asker').on('connection', function(socket) {
 
+    socket.on('query', function(requirement) {
+        var workers=scheduler.findQualifiedWorkers(requirement);
+        socket.emit('queryresult',workers);
+    });
+
     socket.on('test', function(test) {
         var job = new Job(test);
         job.on('done', function(data) {
