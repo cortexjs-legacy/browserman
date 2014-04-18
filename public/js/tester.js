@@ -6,7 +6,7 @@
 
 	var jobId=getURLParameter('jobId');
 
-	var socket = io.connect('http://localhost:9000/tester');
+	var socket = io.connect('/tester');
 
 	var result=[];
 

@@ -8,16 +8,12 @@ var path = require('path');
 
 var app = express();
 app.configure(function() {
-    app.use(express.bodyParser());  
-    app.use('/public',express.static(path.join(__dirname, 'public/')));
+    app.use(express.bodyParser());
+    app.use('/public', express.static(path.join(__dirname, 'public/')));
     app.use(app.router);
 });
 
-app.get('/proxy',function(req,res){
-    require('request').get(req.query.url).pipe(res);
-})
-
-app.get('/api/worker',function(req,res){
+app.get('/api/worker', function(req, res) {
     res.send(scheduler.getAllWorkers());
 })
 
@@ -40,8 +36,8 @@ io.of('/worker').on('connection', function(socket) {
 
     socket.on('register', function(options) {
         worker = new Worker(options);
-        worker.on('job',function(job){
-            socket.emit('job',job);
+        worker.on('job', function(job) {
+            socket.emit('job', job);
         })
         scheduler.registerWorker(worker);
 
@@ -57,7 +53,7 @@ io.of('/asker').on('connection', function(socket) {
     socket.on('test', function(test) {
         var job = new Job(test);
         job.on('done', function(data) {
-            socket.emit('done',data);
+            socket.emit('done', data);
         });
         scheduler.scheduleJob(job)
     });
@@ -79,6 +75,6 @@ io.of('/tester').on('connection', function(socket) {
     });
 });
 
-exports.startServer=function(port){
-	server.listen(port);
+exports.startServer = function(port) {
+    server.listen(port);
 }

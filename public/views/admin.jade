@@ -18,7 +18,7 @@ block content
 				.form-group
 					span.name {{worker.browser.name}}
 					span.version ({{worker.browser.version}})
-				.form-group.test-btn-area.pull-right()
+				.form-group.test-btn-area.pull-right(ng-show="showPanelStatus[id]")
 					button.btn.btn-default.test-btn(type="submit", ng-click="test(id)") Test
-				.form-group.pull-right()
+				.form-group.pull-right(ng-show="showPanelStatus[id]")
 					input.form-control.url-input(ng-model="url[id]", type="text", placeholder="Enter URL")
