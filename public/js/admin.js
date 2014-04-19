@@ -1,6 +1,6 @@
 var app=angular.module('app', []);
 	function Controller($scope,$http){
-		var socket = io.connect('/asker');
+		var socket = io.connect('/client');
 
 		socket.on('connect',function(){
 			console.log('connected');			

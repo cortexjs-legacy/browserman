@@ -29,7 +29,7 @@ io.set('transports', [
     'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling'
 ]);
 
-// browser that standby to handle a test
+// browser registry
 io.of('/worker').on('connection', function(socket) {
 
     var worker;
@@ -47,8 +47,8 @@ io.of('/worker').on('connection', function(socket) {
     });
 });
 
-// who asks for a test
-io.of('/asker').on('connection', function(socket) {
+// client who asks for a test
+io.of('/client').on('connection', function(socket) {
 
     socket.on('query', function(requirement) {
         var workers=scheduler.findQualifiedWorkers(requirement);
