@@ -1,10 +1,15 @@
 extends layout/default.jade
 
 block head  
-	title Dashboard
+	title Test
+	+css("/public/css/lib/mocha.css")
+	
+block content 
+	div#mocha 
 	+js("/public/js/lib/detector.js")
 	+js("/socket.io/socket.io.js")
+	+js("/public/js/lib/expect.js")
+	+js("/public/js/lib/mocha.js")
+	script mocha.setup('bdd')
 	+js("/public/js/tester.js")
-	
-block content  
-	script(type="text/javascript") console.log('haha')
+	+js("/public/js/testcase.js")

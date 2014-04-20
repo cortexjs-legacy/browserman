@@ -8,42 +8,53 @@
 
 	var socket = io.connect('/tester');
 
-	var result = [];
+	var result = {
+		jobId: jobId,
+		browser: {
+			name: bowser.name,
+			version: bowser.version
+		},
+		data: {
+			passes:[],
+			failures:[]
+		}
+	}
 
 	socket.on('connect', function() {
 		console.log('connected');
 
-		setTimeout(function() {
-			result.push('success');
-			socket.emit('done', {
-				jobId: jobId,
-				result: result,
-				browser: {
-					name: bowser.name,
-					version: bowser.version
-				}
-			});
-			window.close();
-		}, 3000)
+		function BrowsermanReporter(runner) {
 
+			runner.on('pass', function(test) {
+				result.data.passes.push({
+					title: test.title,
+					fullTitle:test.fullTitle(),
+					duration: test.duration,
+				})
+			});
+
+			runner.on('fail', function(test, err) {
+				result.data.failures.push({
+					title: test.title,
+					fullTitle:test.fullTitle(),
+					duration: test.duration,
+					error: err.message
+				});
+			});
+
+			runner.on('end', function() {
+				socket.emit('done', result);
+				window.close();
+			});
+		}
+
+		mocha.reporter(BrowsermanReporter);
+		mocha.run();
 
 		socket.on('disconnect', function() {
 
 		});
 
 	});
-
-	console.error = function(error) {
-		result.push({
-			error: error
-		});
-	}
-
-	window.onerror = function(error, url, line) {
-		result.push({
-			error: error,
-			line: line
-		});
-	};
 
 })()
