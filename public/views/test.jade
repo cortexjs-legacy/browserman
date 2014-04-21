@@ -6,10 +6,8 @@ block head
 	
 block content 
 	div#mocha 
-	+js("/public/js/lib/detector.js")
-	+js("/socket.io/socket.io.js")
-	+js("/public/js/lib/expect.js")
-	+js("/public/js/lib/mocha.js")
+	+js("/public/js/build/lib/expect.js")
+	+js("/public/js/build/lib/mocha.js")
 	script mocha.setup('bdd')
-	+js("/public/js/tester.js")
-	+js("/public/js/testcase.js")
+	+js("/public/js/build/testcase.js")
+	+js("/public/js/build/tester.js")
