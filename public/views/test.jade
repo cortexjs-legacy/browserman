@@ -8,6 +8,8 @@ block content
 	div#mocha 
 	+js("/public/js/build/lib/expect.js")
 	+js("/public/js/build/lib/mocha.js")
-	script mocha.setup('bdd')
+	script mocha.setup('bdd');
 	+js("/public/js/build/testcase.js")
-	+js("/public/js/build/tester.js")
+	+js("/public/js/build/browserman.js")
+	script new Browserman({type:'mocha',instance:mocha}).init();
+
