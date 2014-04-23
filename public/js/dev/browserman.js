@@ -2,9 +2,10 @@ var io = require('./lib/socket.io');
 var browser = require('./lib/bowser').browser;
 
 function Browserman(options) {
-	var options= options||{};
+	var options = options || {};
 	this.type = options.type || 'mocha',
 	this.instance = options.instance || mocha;
+	this.server = options.server || 'localhost:9000';
 	this.reporter = {
 		'mocha': function(mocha, socket) {
 			var result = {
@@ -41,11 +42,41 @@ function Browserman(options) {
 				runner.on('end', function() {
 					socket.emit('done', result);
 					window.close();
+
 				});
 			}
-
-			mocha.reporter(Reporter);
-			mocha.run();
+			socket.on('connect', function() {
+				mocha.reporter(Reporter);
+				mocha.run();
+			});
+		},
+		'plain': function(window, socket) {
+			var result = {
+				jobId: getURLParameter('jobId'),
+				browser: {
+					name: browser.name,
+					version: browser.version
+				},
+				data: {
+					passes: [],
+					failures: []
+				}
+			};
+			window.onerror = function(error, url, line) {
+				result.data.failures.push({
+					title: error,
+					fullTitle: error,
+					duration: 0,
+					error: 'ERR:' + error + ' LINE:' + line
+				});
+			};
+			socket.on('connect', function() {
+				setTimeout(function() {
+					console.log(result)
+					socket.emit('done', result);
+					window.close();
+				}, 3000);
+			});
 		}
 
 	}
@@ -59,11 +90,8 @@ Browserman.prototype.init = function() {
 	if (!jobId) {
 		return;
 	}
-	var socket = io.connect('/tester');
-	var self = this;
-	socket.on('connect', function() {
-		self.reporter[self.type](self.instance, socket);
-	});
+	var socket = io.connect('http://' + this.server + '/tester');
+	this.reporter[this.type](this.instance, socket);
 };
 
 window.Browserman = Browserman;

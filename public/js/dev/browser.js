@@ -12,6 +12,7 @@ socket.on('connect', function() {
 	});
 
 	socket.on('job', function(job) {
+		console.log('job arrive')
 		window.open(job.url);
 	});
 

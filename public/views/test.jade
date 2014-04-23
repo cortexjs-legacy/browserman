@@ -11,5 +11,5 @@ block content
 	script mocha.setup('bdd');
 	+js("/public/js/build/testcase.js")
 	+js("/public/js/build/browserman.js")
-	script new Browserman({type:'mocha',instance:mocha}).init();
+	script new Browserman({type:'mocha',instance:mocha,server:'localhost:9000'}).init();
 
