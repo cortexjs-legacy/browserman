@@ -8,8 +8,13 @@ function Browserman(options) {
 	this.server = options.server || 'localhost:9000';
 	this.reporter = {
 		'mocha': function(mocha, socket) {
+			var jobId = getURLParameter('jobId');
+			if (!jobId) {
+				mocha.run();
+				return;
+			}
 			var result = {
-				jobId: getURLParameter('jobId'),
+				jobId: jobId,
 				browser: {
 					name: browser.name,
 					version: browser.version
@@ -51,6 +56,10 @@ function Browserman(options) {
 			});
 		},
 		'plain': function(window, socket) {
+			var jobId = getURLParameter('jobId');
+			if (!jobId) {
+				return;
+			}
 			var result = {
 				jobId: getURLParameter('jobId'),
 				browser: {
@@ -86,10 +95,6 @@ function Browserman(options) {
 
 
 Browserman.prototype.init = function() {
-	var jobId = getURLParameter('jobId');
-	if (!jobId) {
-		return;
-	}
 	var socket = io.connect('http://' + this.server + '/tester');
 	this.reporter[this.type](this.instance, socket);
 };
