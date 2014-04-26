@@ -57,7 +57,7 @@ io.of('/client').on('connection', function(socket) {
 
     socket.on('test', function(test) {
         var job = new Job(test);
-        job.on('done', function(data) {
+        job.once('done', function(data) {
             socket.emit('done', data);
         });
         scheduler.scheduleJob(job)
