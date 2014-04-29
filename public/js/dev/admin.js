@@ -1,5 +1,5 @@
 var io = require('./lib/socket.io');
-
+var angular=require('angular');
 var app = angular.module('app', []);
 
 app.controller("Controller", ["$scope", "$http",

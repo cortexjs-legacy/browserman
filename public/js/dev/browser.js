@@ -1,5 +1,5 @@
 var io = require('./lib/socket.io');
-var browser=require('./lib/bowser').browser;
+var browser=require('bowser').browser;
 
 var socket = io.connect('/worker', {});
 
