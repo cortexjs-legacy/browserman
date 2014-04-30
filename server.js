@@ -13,6 +13,14 @@ app.configure(function() {
     app.use(app.router);
 });
 
+app.get('/browser',function(req,res){
+    res.sendfile(__dirname+'/public/browser.html');
+})
+
+app.get('/admin',function(req,res){
+    res.sendfile(__dirname+'/public/admin.html');
+})
+
 app.get('/api/worker', function(req, res) {
     res.send(scheduler.getAllWorkers());
 })
