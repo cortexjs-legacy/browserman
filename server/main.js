@@ -1,24 +1,24 @@
 var express = require('express');
 var http = require('http');
-var logger = require('./lib/logger');
-var Worker = require('./lib/worker');
-var Job = require('./lib/job');
-var scheduler = require('./lib/scheduler');
 var path = require('path');
+var logger = require('../lib/logger');
+var Worker = require('../lib/worker');
+var Job = require('../lib/job');
+var scheduler = require('../lib/scheduler');
 
 var app = express();
 app.configure(function() {
     app.use(express.bodyParser());
-    app.use('/public', express.static(path.join(__dirname, 'public/')));
+    app.use('/public', express.static(path.join(__dirname, '/../public/')));
     app.use(app.router);
 });
 
 app.get('/browser',function(req,res){
-    res.sendfile(__dirname+'/public/browser.html');
+    res.sendfile(path.join(__dirname, '/../public/browser.html'));
 })
 
-app.get('/admin',function(req,res){
-    res.sendfile(__dirname+'/public/admin.html');
+app.get('/',function(req,res){
+    res.sendfile(path.join(__dirname, '/../public/admin.html'));
 })
 
 app.get('/api/worker', function(req, res) {
@@ -80,6 +80,7 @@ io.of('/client').on('connection', function(socket) {
 io.of('/tester').on('connection', function(socket) {
 
     socket.on('done', function(data) {
+        // console.log(data);
         scheduler.jobDone(data)
     });
 
@@ -88,6 +89,6 @@ io.of('/tester').on('connection', function(socket) {
     });
 });
 
-exports.startServer = function(port) {
+exports.startOnPort = function(port) {
     server.listen(port);
 }

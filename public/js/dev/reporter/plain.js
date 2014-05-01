@@ -16,5 +16,5 @@ module.exports = function(options) {
 
 	setTimeout(function() {
 		end();
-	}, 3000);
+	}, 5000);
 }
