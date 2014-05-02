@@ -55,8 +55,7 @@ Browserman.prototype.init = function() {
 							var img = canvas2image.saveAsJPEG(canvas, true);
 							result.snapshot=img.outerHTML;
 							socket.emit('done', result);
-							console.log(result);
-							//setTimeout(window.close,1000);
+							setTimeout(window.close,500);
 						}
 					});
 					clearInterval(interval);
