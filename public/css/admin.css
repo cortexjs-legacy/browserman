@@ -24,10 +24,10 @@ form {
   margin-top: 50px;
   width: 900px;
 }
-.search-area {
+.test-area {
   margin-bottom: 20px;
 }
-.search-area input[type=text] {
+.test-area input[type=text] {
   width: 100%;
   font-size: 24px;
   height: 60px;
@@ -39,11 +39,15 @@ form {
   font-size: 30px;
 }
 .browser .version {
-  margin-right: 0px 10px;
+  margin-right: 0px 20px;
   font-size: 26px;
   font-family: "Helvetica Neue";
   font-weight: lighter;
 }
-.browser .test-btn-area {
-  margin-left: 10px;
+.browser .status-success {
+  width: 30px;
+  height: 30px;
+  background: #008000;
+  border-radius: 15px;
+  display: inline-block;
 }

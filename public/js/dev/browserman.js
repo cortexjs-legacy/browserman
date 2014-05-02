@@ -1,6 +1,8 @@
 var io = require('./lib/socket.io');
 var browser = require('bowser').browser;
 var querystring = require('querystring');
+var html2canvas = require('./lib/html2canvas');
+var canvas2image = require('./lib/canvas2image');
 
 function Browserman(options) {
 	console.log(options);
@@ -30,7 +32,7 @@ Browserman.prototype.init = function() {
 	var result = {
 		jobId: jobId,
 		browser: {
-			name: browser.name,
+			name: browser.name.toLowerCase(),
 			version: browser.version
 		},
 		data: {
@@ -46,10 +48,18 @@ Browserman.prototype.init = function() {
 			result.data.failures.push(data);
 		},
 		end: function() {
-			setInterval(function() {
+			var interval=setInterval(function() {
 				if (connected) {
-					socket.emit('done', result);
-					window.close()
+					html2canvas(document.body, {
+						onrendered: function(canvas) {
+							var img = canvas2image.saveAsJPEG(canvas, true);
+							result.snapshot=img.outerHTML;
+							socket.emit('done', result);
+							console.log(result);
+							//setTimeout(window.close,1000);
+						}
+					});
+					clearInterval(interval);
 				}
 			}, 200);
 		},

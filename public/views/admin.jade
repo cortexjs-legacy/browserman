@@ -9,14 +9,9 @@ block head
 	
 block content  
 	.container
-		.search-area
-			input.form-control.ng-pristine.ng-valid(type="text", ng-model="searchKey", placeholder="search")
-		.browser.well.well-lg(ng-repeat="(id,worker) in workers | filter:{worker.browser.name:searchKey}", ng-mouseenter="showPanel(id)", ng-mouseleave="hidePanel()")
-			form.form-inline(role="form")
-				.form-group
-					span.name {{worker.browser.name}}
-					span.version ({{worker.browser.version}})
-				.form-group.test-btn-area.pull-right(ng-show="showPanelStatus[id]")
-					button.btn.btn-default.test-btn(type="submit", ng-click="test(id)") Test
-				.form-group.pull-right(ng-show="showPanelStatus[id]")
-					input.form-control.url-input(ng-model="url[id]", type="text", placeholder="Enter URL")
+		.test-area
+			input.form-control(type="text" ng-model="url" ng-enter="test(url)" placeholder="url to test")
+		.browser.well.well-lg(ng-repeat="(id,worker) in workers")
+			span.name {{worker.browser.name}}
+			span.version ({{worker.browser.version}})
+			span.pull-right.status-success

@@ -9,14 +9,16 @@ var app = express();
 app.configure(function() {
     app.use(function handleInjection(req, res, next) {
         if (req.query.browserman_jobid) {
+            logger.debug('handle injection: %s',req.url);
             inject(req.url, function(err,html) {
-                res.send(html)
+                return res.send(html);
             });
         } else {
             next();
         }
     });
     app.use(function handelProxy(req, res, next) {
+        logger.debug('handle proxy: %s',req.url);
         req.pipe(request(req.url)).pipe(res)
     });
 });
@@ -24,7 +26,6 @@ app.configure(function() {
 var server = http.createServer(app);
 
 function inject(url, cb) {
-    logger.info('inject script to: %s',url);
     jsdom.env({
         url: url,
         done: function(errors, window) {

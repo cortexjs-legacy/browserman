@@ -1,6 +1,20 @@
 var io = require('./lib/socket.io');
 var angular=require('angular');
+
 var app = angular.module('app', []);
+
+app.directive('ngEnter', function() {
+	return function(scope, element, attrs) {
+		element.bind("keydown keypress", function(event) {
+			if (event.which === 13) {
+				scope.$apply(function() {
+					scope.$eval(attrs.ngEnter);
+				});
+				event.preventDefault();
+			}
+		});
+	};
+});
 
 app.controller("Controller", ["$scope", "$http",
 	function($scope, $http) {
@@ -19,15 +33,14 @@ app.controller("Controller", ["$scope", "$http",
 
 		});
 
-		$scope.url = {};
-
-		$scope.test = function(workerId) {
-			socket.emit('test', {
-				url: $scope.url[workerId],
-				requirement: {
-					workerId: workerId
-				}
-			});
+		$scope.test = function(url) {
+			console.log(url);
+			// socket.emit('test', {
+			// 	url: $scope.url[workerId],
+			// 	requirement: {
+			// 		workerId: workerId
+			// 	}
+			// });
 		}
 
 		$http.get('/api/worker').success(function(data) {
