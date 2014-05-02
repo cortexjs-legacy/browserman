@@ -1,4 +1,4 @@
-module.exports = function(options) {
+exports.run = function(options) {
 	var doNothing=function(){};
 	var pass = options.pass||doNothing;
 	var fail = options.fail||doNothing;

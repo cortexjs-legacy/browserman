@@ -17,13 +17,19 @@ function Browserman(options) {
 }
 
 Browserman.prototype.init = function() {
+
 	console.log('init browserman');
-	var jobId = querystring.parse(location.search.replace('?', '')).browserman_jobid;
+
+	var query = querystring.parse(location.search.replace('?', ''));
+	var jobId = query.browserman_jobid;
+	var needsSceenshot = query.browserman_screenshot=='false'?false:true;
+	var connected = false;
+	var self = this;
+
 	if (!jobId) {
 		return;
 	}
-	var self = this;
-	var connected = false;
+
 	var socket = io.connect('http://' + this.server + '/tester');
 	socket.on('connect', function() {
 		connected = true;
@@ -40,7 +46,8 @@ Browserman.prototype.init = function() {
 			failures: []
 		}
 	};
-	self.reporter[self.type]({
+	self.reporter[self.type].run({
+		instance: self.instance,
 		pass: function(data) {
 			result.data.passes.push(data);
 		},
@@ -48,21 +55,26 @@ Browserman.prototype.init = function() {
 			result.data.failures.push(data);
 		},
 		end: function() {
-			var interval=setInterval(function() {
-				if (connected) {
+			var interval = setInterval(function() {
+				if (!connected) {
+					return;
+				}
+				if (needsSceenshot) {
 					html2canvas(document.body, {
 						onrendered: function(canvas) {
 							var img = canvas2image.saveAsJPEG(canvas, true);
-							result.snapshot=img.outerHTML;
+							result.screenshot = img.outerHTML;
 							socket.emit('done', result);
-							setTimeout(window.close,500);
+							setTimeout(window.close, 500);
 						}
 					});
-					clearInterval(interval);
+				} else {
+					socket.emit('done', result);
+					setTimeout(window.close, 500);
 				}
+				clearInterval(interval);
 			}, 200);
-		},
-		instance: self.instance
+		}
 	});
 };
 
