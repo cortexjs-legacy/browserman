@@ -9,7 +9,7 @@ var app = express();
 app.configure(function() {
     app.use(function handleInjection(req, res, next) {
         if (req.query.browserman_jobid) {
-            logger.debug('handle injection: %s',req.url);
+            logger.debug('[proxy] injection: %s',req.url);
             inject(req.url, function(err,html) {
                 return res.send(html);
             });
@@ -18,7 +18,7 @@ app.configure(function() {
         }
     });
     app.use(function handelProxy(req, res, next) {
-        logger.debug('handle proxy: %s',req.url);
+        logger.debug('[proxy] normal: %s',req.url);
         req.pipe(request(req.url)).pipe(res)
     });
 });

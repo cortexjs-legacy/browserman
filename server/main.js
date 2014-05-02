@@ -58,15 +58,19 @@ io.of('/worker').on('connection', function(socket) {
 // client who asks for a test
 io.of('/client').on('connection', function(socket) {
 
-    socket.on('query', function(requirement) {
-        var workers=scheduler.findQualifiedWorkers(requirement);
-        socket.emit('queryresult',workers);
-    });
+    socket.on('list',function(){
+        socket.emit('list:result',scheduler.getAllWorkers());
+    })
 
     socket.on('test', function(test) {
         var job = new Job(test);
-        job.once('done', function(data) {
+
+        job.on('done', function(data) {
             socket.emit('done', data);
+        });
+
+        job.once('complete', function() {
+            socket.emit('complete');
         });
         scheduler.scheduleJob(job)
     });
