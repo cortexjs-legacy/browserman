@@ -19,7 +19,10 @@ app.configure(function() {
     });
     app.use(function handelProxy(req, res, next) {
         logger.debug('[proxy] normal: %s',req.url);
-        req.pipe(request(req.url)).pipe(res)
+        req.pipe(request(req.url)).on( 'error', function(err){
+            logger.error(err,req.url);
+            res.end(err.toString());
+        }).pipe(res);
     });
 });
 
