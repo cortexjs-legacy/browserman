@@ -1,0 +1,12 @@
+{
+	"server": {
+		"main": {
+			"address": "localhost",
+			"port": 9000
+		},
+			"proxy": {
+			"address": "localhost",
+			"port": 9001
+		}
+	}
+}

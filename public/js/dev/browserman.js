@@ -70,7 +70,7 @@ Browserman.prototype.init = function() {
 					});
 				} else {
 					socket.emit('done', result);
-					setTimeout(window.close, 500);
+					//setTimeout(window.close, 500);
 				}
 				clearInterval(interval);
 			}, 200);
@@ -78,14 +78,18 @@ Browserman.prototype.init = function() {
 	});
 };
 
+var server=document.getElementById('browserman').getAttribute('data-server');
 if (window.mocha) {
 	new Browserman({
 		type: 'mocha',
-		instance: window.mocha
+		instance: window.mocha,
+		server:	server
+
 	}).init()
 } else {
 	new Browserman({
 		type: 'plain',
-		instance: window
+		instance: window,
+		server:server
 	}).init()
 }

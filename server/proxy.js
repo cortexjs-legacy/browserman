@@ -4,6 +4,7 @@ var http = require('http');
 var path = require('path');
 var jsdom = require('jsdom');
 var logger = require('../lib/logger');
+var config=require('../lib/config');
 
 var app = express();
 app.configure(function() {
@@ -36,11 +37,14 @@ function inject(url, cb) {
                 console.log(errors);
                 return cb(new Error('parsing error'))
             }
+            var serverAddress=config.getMainServerAddress();
             var document=window.document;
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
+            script.id='browserman';
             script.type = 'text/javascript';
-            script.src = 'http://localhost:9000/public/js/build/browserman.js';
+            script.setAttribute('data-server',serverAddress);
+            script.src = 'http://'+serverAddress+'/public/js/build/browserman.js';
             // Fire the loading
             head.appendChild(script);
             var html='<html>'+document.documentElement.innerHTML+'</html>'
@@ -48,6 +52,8 @@ function inject(url, cb) {
         }
     });
 }
+
+
 
 exports.startOnPort = function(port) {
     server.listen(port);
