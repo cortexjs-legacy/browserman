@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start":"node index.js",
+    "start": "node index.js",
     "prepare": "sh bin/prepare.sh"
   },
   "author": "",
@@ -23,6 +23,7 @@
     "semver": "~2.2.1",
     "bowser": "~0.7.1",
     "angular": "~1.2.16",
-    "jsdom": "^0.10.5"
+    "jsdom": "^0.10.5",
+    "string-format": "^0.2.1"
   }
 }

@@ -13,5 +13,5 @@ block content
 			input.form-control(type="text" ng-model="url" ng-enter="test(url)" placeholder="url to test")
 		.browser.well.well-lg(ng-repeat="worker in workers")
 			span.name {{worker.browser.name}}
-			span.version ({{worker.browser.version}})
-			//- span.pull-right.status-success
+			span.version  {{worker.browser.version}} / {{worker.browser.os}}
+

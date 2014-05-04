@@ -1,5 +1,6 @@
+var angular = require('angular');
+var sf=require('string-format');
 var io = require('./lib/socket.io');
-var angular=require('angular');
 
 var app = angular.module('app', []);
 
@@ -18,15 +19,23 @@ app.directive('ngEnter', function() {
 
 app.controller("Controller", ["$scope", "$http",
 	function($scope, $http) {
+
+		$scope.screenshots={}
+
 		var socket = io.connect('/client');
 
 		socket.on('connect', function() {
 			console.log('connected');
 
 			socket.on('done', function(data) {
-				alert(JSON.stringify(data.result));
+				var title='{name}({version}-{os})'.format(data.browser);
+				openScreenshot(title,data.screenshot);
 			});
 
+
+			socket.on('complete', function(data) {
+
+			})
 			socket.on('disconnect', function() {
 
 			});
@@ -34,26 +43,35 @@ app.controller("Controller", ["$scope", "$http",
 		});
 
 		$scope.test = function(url) {
+			if (!isValidUrl(url)) {
+				alert('invalid url');
+				return;
+			}
 			console.log(url);
-			// socket.emit('test', {
-			// 	url: $scope.url[workerId],
-			// 	requirement: {
-			// 		workerId: workerId
-			// 	}
-			// });
+			socket.emit('test', {
+				url: url,
+				requirement: {
+					name: '',
+					version: '*',
+					screenshot: true
+				}
+			});
 		}
 
 		$http.get('/api/worker').success(function(data) {
 			$scope.workers = data;
 		})
 
-		$scope.showPanel = function(id) {
-			$scope.showPanelStatus = {};
-			$scope.showPanelStatus[id] = true;
+
+		function openScreenshot(title,screenshot){
+			var doc=window.open('_blank').document;
+			var html='<html><body>'+screenshot+'</body></html>';
+			doc.write(html);
+			doc.title=title;
 		}
 
-		$scope.hidePanel = function() {
-			$scope.showPanelStatus = {};
+		function isValidUrl(url) {
+			return /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(url);
 		}
 
 	}

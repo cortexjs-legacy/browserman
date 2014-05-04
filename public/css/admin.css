@@ -17,6 +17,9 @@ input[type=text] {
   font-family: "Helvetica Neue";
   font-weight: lighter;
 }
+img {
+  width: 100%;
+}
 form {
   margin-bottom: 0px;
 }
@@ -36,18 +39,11 @@ form {
   -webkit-animation: fadeInDown 1s;
 }
 .browser .name {
-  font-size: 30px;
+  font-size: 36px;
 }
 .browser .version {
   margin-right: 0px 20px;
-  font-size: 26px;
+  font-size: 24px;
   font-family: "Helvetica Neue";
   font-weight: lighter;
-}
-.browser .status-success {
-  width: 30px;
-  height: 30px;
-  background: #008000;
-  border-radius: 15px;
-  display: inline-block;
 }

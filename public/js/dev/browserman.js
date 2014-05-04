@@ -39,7 +39,7 @@ Browserman.prototype.init = function() {
 		jobId: jobId,
 		browser: {
 			name: browser.name.toLowerCase(),
-			version: browser.version,
+			version: browser.version+'.0',
 			os:getOS()
 		},
 		data: {
