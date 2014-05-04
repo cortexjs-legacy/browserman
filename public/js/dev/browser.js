@@ -22,7 +22,7 @@ socket.on('job', function(job) {
 	//close the tab in case of misoperation
 	setTimeout(function(){
 		w.close();
-	},10000);
+	},20000);
 });
 
 socket.on('disconnect', function() {
