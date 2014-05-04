@@ -1,7 +1,10 @@
 var io = require('./lib/socket.io');
 var browser = require('bowser').browser;
 
-var socket = io.connect('/worker', {});
+var socket = io.connect('/worker', {
+	'max reconnection attempts ':50,
+	'reconnection delay':1000,
+});
 
 socket.on('connect', function() {
 	console.log('connected');
@@ -14,7 +17,12 @@ socket.on('connect', function() {
 
 socket.on('job', function(job) {
 	console.log('job arrive')
-	window.open(job.url);
+	w=window.open(job.url);
+
+	//close the tab in case of misoperation
+	setTimeout(function(){
+		w.close();
+	},10000);
 });
 
 socket.on('disconnect', function() {
