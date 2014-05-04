@@ -3,11 +3,10 @@ extends layout/default.jade
 block head  
 	title Test
 	+css("/public/css/lib/mocha.css")
-	
-block content 
-	div#mocha 
 	+js("/public/js/build/lib/expect.js")
 	+js("/public/js/build/lib/mocha.js")
 	script mocha.setup('bdd');
 	+js("/public/js/build/testcase.js")
-	+js("/public/js/build/browserman.js")
+
+block content 
+	div#mocha 

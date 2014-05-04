@@ -39,7 +39,8 @@ Browserman.prototype.init = function() {
 		jobId: jobId,
 		browser: {
 			name: browser.name.toLowerCase(),
-			version: browser.version
+			version: browser.version,
+			os:getOS()
 		},
 		data: {
 			passes: [],
@@ -78,6 +79,15 @@ Browserman.prototype.init = function() {
 	});
 };
 
+function getOS() {
+	var os = "Unknown OS";
+	if (navigator.appVersion.indexOf("Win") != -1) os = "window";
+	if (navigator.appVersion.indexOf("Mac") != -1) os = "mac";
+	if (navigator.appVersion.indexOf("X11") != -1) os = "unix";
+	if (navigator.appVersion.indexOf("Linux") != -1) os = "linux";
+	return os;
+} 
+
 var server=document.getElementById('browserman').getAttribute('data-server');
 if (window.mocha) {
 	new Browserman({
@@ -85,11 +95,11 @@ if (window.mocha) {
 		instance: window.mocha,
 		server:	server
 
-	}).init()
+	}).init();
 } else {
 	new Browserman({
 		type: 'plain',
 		instance: window,
 		server:server
-	}).init()
+	}).init();
 }

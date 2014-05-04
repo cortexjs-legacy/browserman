@@ -29,7 +29,6 @@ exports.run = function(options) {
 		});
 	}
 
-	console.log('hahaha')
 	mocha.reporter(Reporter);
 	mocha.run();
 }
