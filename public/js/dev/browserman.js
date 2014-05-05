@@ -4,6 +4,9 @@ var querystring = require('querystring');
 var html2canvas = require('./lib/html2canvas');
 var canvas2image = require('./lib/canvas2image');
 
+//support socket.io jsonp
+window.io=io;
+
 function Browserman(options) {
 	var options = options || {};
 	this.type = options.type || 'mocha',
