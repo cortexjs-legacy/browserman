@@ -9,6 +9,9 @@ module.exports = (function() {
 	// check if we have canvas support
 	var bHasCanvas = false;
 	var oCanvas = document.createElement("canvas");
+	if(!oCanvas.getContext){
+		return;
+	}
 	if (oCanvas.getContext("2d")) {
 		bHasCanvas = true;
 	}
