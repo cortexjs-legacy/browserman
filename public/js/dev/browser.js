@@ -3,7 +3,7 @@ var browser = require('bowser').browser;
 
 var socket = io.connect('/worker', {
 	'max reconnection attempts ':50,
-	'reconnection delay':1000,
+	'reconnection delay':1000
 });
 
 socket.on('connect', function() {
