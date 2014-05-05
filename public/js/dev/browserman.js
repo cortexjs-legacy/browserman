@@ -5,7 +5,6 @@ var html2canvas = require('./lib/html2canvas');
 var canvas2image = require('./lib/canvas2image');
 
 function Browserman(options) {
-	console.log(options);
 	var options = options || {};
 	this.type = options.type || 'mocha',
 	this.instance = options.instance || mocha;
@@ -17,8 +16,6 @@ function Browserman(options) {
 }
 
 Browserman.prototype.init = function() {
-
-	console.log('init browserman');
 
 	var query = querystring.parse(location.search.replace('?', ''));
 	var jobId = query.browserman_jobid;
@@ -33,7 +30,6 @@ Browserman.prototype.init = function() {
 	var socket = io.connect('http://' + this.server + '/tester');
 	socket.on('connect', function() {
 		connected = true;
-		console.log('connected to server');
 	});
 	var result = {
 		jobId: jobId,
