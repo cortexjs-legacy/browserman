@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "node index.js",
-    "prepare": "sh bin/prepare.sh"
+    "mac-proxy-on": "sudo sh bin/mac-proxy-on.sh",
+    "mac-proxy-off": "sudo sh bin/mac-proxy-off.sh"
   },
   "author": "",
   "license": "BSD",

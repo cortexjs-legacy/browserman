@@ -11,7 +11,7 @@ exports.run = function(options) {
 			pass({
 				title: test.title,
 				fullTitle: test.fullTitle(),
-				duration: test.duration,
+				duration: test.duration
 			})
 		});
 
