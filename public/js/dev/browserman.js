@@ -81,7 +81,7 @@ Browserman.prototype.init = function() {
 
 function getOS() {
 	var os = "Unknown OS";
-	if (navigator.appVersion.indexOf("Win") != -1) os = "window";
+	if (navigator.appVersion.indexOf("Win") != -1) os = "windows";
 	if (navigator.appVersion.indexOf("Mac") != -1) os = "mac";
 	if (navigator.appVersion.indexOf("X11") != -1) os = "unix";
 	if (navigator.appVersion.indexOf("Linux") != -1) os = "linux";
