@@ -48,6 +48,7 @@ function testHtml(job) {
 	script.type = 'text/javascript';
 	script.setAttribute('data-server', serverAddress);
 	script.setAttribute('data-jobid', job.jobId);
+	script.setAttribute('data-screenshot', job.requirement.screenshot);
 	script.src = 'http://' + serverAddress + '/public/js/build/browserman.js';
 	head.appendChild(script);
 }

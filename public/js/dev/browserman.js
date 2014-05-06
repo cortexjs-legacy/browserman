@@ -1,6 +1,5 @@
 var io = require('./lib/socket.io');
 var browser = require('bowser').browser;
-var querystring = require('querystring');
 var html2canvas = require('./lib/html2canvas');
 var canvas2image = require('./lib/canvas2image');
 
@@ -18,15 +17,14 @@ function Browserman(options) {
 }
 
 Browserman.prototype.init = function() {
-	var query = querystring.parse(location.search.replace('?', ''));
 	var node = document.getElementById('browserman');
 	
 	var server = node.getAttribute('data-server');
-	var jobId = node.getAttribute('data-jobid') || query.browserman_jobid;
-	var needsSceenshot = (!query.browserman_screenshot || query.browserman_screenshot== 'false') ? false : true;
-	
+	var jobId = node.getAttribute('data-jobid');
+	var screenshot = node.getAttribute('data-screenshot');
+
 	var connected = false;
-	
+
 	var self = this;
 
 	if (!jobId) {
@@ -49,6 +47,7 @@ Browserman.prototype.init = function() {
 			failures: []
 		}
 	};
+
 	self.reporter[self.type].run({
 		instance: self.instance,
 		pass: function(data) {
@@ -62,7 +61,7 @@ Browserman.prototype.init = function() {
 				if (!connected) {
 					return;
 				}
-				if (needsSceenshot) {
+				if (screenshot=="true") {
 					html2canvas(document.body, {
 						onrendered: function(canvas) {
 							var img = canvas2image.saveAsJPEG(canvas, true);

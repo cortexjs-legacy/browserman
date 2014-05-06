@@ -2,9 +2,9 @@ extends layout/default.jade
 
 block head  
 	title Test
-	+css("/public/css/lib/mocha.css")
-	+js("/public/js/build/lib/expect.js")
 	+js("/public/js/build/lib/mocha.js")
+	+js("/public/js/build/lib/expect.js")
+	+css("/public/css/lib/mocha.css")
 	script mocha.setup('bdd');
 	+js("/public/js/build/testcase.js")
 block content 

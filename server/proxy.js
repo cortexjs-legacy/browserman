@@ -11,7 +11,11 @@ app.configure(function() {
     app.use(function handleInjection(req, res, next) {
         if (req.query.browserman_jobid) {
             logger.debug('[proxy] injection: %s',req.url);
-            inject(req.url, function(err,html) {
+            inject(req.url, {
+                'data-server':config.getMainServerAddress(),
+                'data-jobid':req.query.browserman_jobid,
+                'data-screenshot':req.query.browserman_screenshot
+            },function(err,html) {
                 return res.send(html);
             });
         } else {
@@ -29,7 +33,7 @@ app.configure(function() {
 
 var server = http.createServer(app);
 
-function inject(url, cb) {
+function inject(url, dataAttrs, cb) {
     jsdom.env({
         url: url,
         done: function(errors, window) {
@@ -43,9 +47,10 @@ function inject(url, cb) {
             var script = document.createElement('script');
             script.id='browserman';
             script.type = 'text/javascript';
-            script.setAttribute('data-server',serverAddress);
             script.src = 'http://'+serverAddress+'/public/js/build/browserman.js';
-            // Fire the loading
+            for(var key in dataAttrs){
+                script.setAttribute(key,dataAttrs[key]);
+            }
             head.appendChild(script);
             var html='<html>'+document.documentElement.innerHTML+'</html>'
             return cb(null,html);
