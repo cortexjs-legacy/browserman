@@ -37,7 +37,7 @@ function testUrl(job) {
 	}, 20000);
 }
 
-function testHtml(html) {
+function testHtml(job) {
 	var serverAddress=job.serverAddress;
 	var win = window.open('');
 	var doc = win.document;
