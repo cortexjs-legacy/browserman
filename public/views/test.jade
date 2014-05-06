@@ -7,6 +7,6 @@ block head
 	+js("/public/js/build/lib/mocha.js")
 	script mocha.setup('bdd');
 	+js("/public/js/build/testcase.js")
-
+	script mocha.run();
 block content 
 	div#mocha 
