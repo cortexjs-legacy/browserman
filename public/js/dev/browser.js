@@ -41,7 +41,7 @@ function testHtml(job) {
 	var serverAddress=job.serverAddress;
 	var win = window.open('');
 	var doc = win.document;
-	doc.write(html);
+	doc.write(job.html);
 	var head = doc.getElementsByTagName('head')[0];
 	var script = doc.createElement('script');
 	script.id = 'browserman';
