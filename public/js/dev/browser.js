@@ -49,13 +49,12 @@ function testHtml(html,jobId) {
 	script.setAttribute('data-server', serverAddress);
 	script.setAttribute('data-jobid', jobId);
 	script.src = 'http://' + serverAddress + '/public/js/build/browserman.js';
-	// Fire the loading
-	insertAfter(head.lastChild,script);
+	head.appendChild(script);
 }
 
-function insertAfter(referenceNode, newNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
+// function insertAfter(referenceNode, newNode) {
+//     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+// }
 
 function getOS() {
 	var os = "Unknown OS";
