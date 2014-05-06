@@ -18,9 +18,10 @@ function Browserman(options) {
 }
 
 Browserman.prototype.init = function() {
-	var node = document.getElementById('browserman');
-	var server = node.getAttribute('data-server');
 	var query = querystring.parse(location.search.replace('?', ''));
+	var node = document.getElementById('browserman');
+	
+	var server = node.getAttribute('data-server');
 	var jobId = node.getAttribute('data-jobid') || query.browserman_jobid;
 	var needsSceenshot = (!query.browserman_screenshot || query.browserman_screenshot== 'false') ? false : true;
 	

@@ -18,9 +18,9 @@ socket.on('connect', function() {
 socket.on('job', function(job) {
 	console.log('job arrive');
 	if (job.html) {
-		testHtml(job.html,job.jobId);
+		testHtml(job);
 	} else if (job.url) {
-		testUrl(job.url);
+		testUrl(job);
 	}
 });
 
@@ -29,17 +29,17 @@ socket.on('disconnect', function() {
 
 });
 
-function testUrl(url) {
-	var win = window.open(url);
+function testUrl(job) {
+	var win = window.open(job.url);
 	//close the tab in case of misoperation
 	setTimeout(function() {
 		win.close();
 	}, 20000);
 }
 
-function testHtml(html,jobId) {
-	var serverAddress='browserman.dp:9000';
-	var win = window.open('/test.html?jobId=',jobId);
+function testHtml(html) {
+	var serverAddress=job.serverAddress;
+	var win = window.open('');
 	var doc = win.document;
 	doc.write(html);
 	var head = doc.getElementsByTagName('head')[0];
@@ -47,7 +47,7 @@ function testHtml(html,jobId) {
 	script.id = 'browserman';
 	script.type = 'text/javascript';
 	script.setAttribute('data-server', serverAddress);
-	script.setAttribute('data-jobid', jobId);
+	script.setAttribute('data-jobid', job.jobId);
 	script.src = 'http://' + serverAddress + '/public/js/build/browserman.js';
 	head.appendChild(script);
 }
