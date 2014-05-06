@@ -43,7 +43,7 @@ function testHtml(html,jobId) {
 	var win = window.open('/test.html?jobId=',jobId);
 	var doc = win.document;
 	doc.write(html);
-	var body = doc.getElementsByTagName('body')[0];
+	var head = doc.getElementsByTagName('head')[0];
 	var script = doc.createElement('script');
 	script.id = 'browserman';
 	script.type = 'text/javascript';
@@ -51,7 +51,11 @@ function testHtml(html,jobId) {
 	script.setAttribute('data-jobid', jobId);
 	script.src = 'http://' + serverAddress + '/public/js/build/browserman.js';
 	// Fire the loading
-	body.appendChild(script);
+	insertAfter(head.lastChild,script);
+}
+
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 function getOS() {
