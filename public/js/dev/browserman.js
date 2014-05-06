@@ -5,13 +5,12 @@ var html2canvas = require('./lib/html2canvas');
 var canvas2image = require('./lib/canvas2image');
 
 //support socket.io jsonp
-window.io=io;
+window.io = io;
 
 function Browserman(options) {
 	var options = options || {};
 	this.type = options.type || 'mocha',
 	this.instance = options.instance || mocha;
-	this.server = options.server || 'localhost:9000';
 	this.reporter = {
 		'mocha': require('./reporter/mocha'),
 		'plain': require('./reporter/plain')
@@ -19,18 +18,21 @@ function Browserman(options) {
 }
 
 Browserman.prototype.init = function() {
-
+	var node = document.getElementById('browserman');
+	var server = node.getAttribute('data-server');
 	var query = querystring.parse(location.search.replace('?', ''));
-	var jobId = query.browserman_jobid;
-	var needsSceenshot = query.browserman_screenshot=='false'?false:true;
+	var jobId = node.getAttribute('data-jobid') || query.browserman_jobid;
+	var needsSceenshot = (!query.browserman_screenshot || query.browserman_screenshot== 'false') ? false : true;
+	
 	var connected = false;
+	
 	var self = this;
 
 	if (!jobId) {
 		return;
 	}
 
-	var socket = io.connect('http://' + this.server + '/tester');
+	var socket = io.connect('http://' + server + '/tester');
 	socket.on('connect', function() {
 		connected = true;
 	});
@@ -38,8 +40,8 @@ Browserman.prototype.init = function() {
 		jobId: jobId,
 		browser: {
 			name: browser.name.toLowerCase(),
-			version: browser.version+'.0',
-			os:getOS()
+			version: browser.version + '.0',
+			os: getOS()
 		},
 		data: {
 			passes: [],
@@ -85,20 +87,16 @@ function getOS() {
 	if (navigator.appVersion.indexOf("X11") != -1) os = "unix";
 	if (navigator.appVersion.indexOf("Linux") != -1) os = "linux";
 	return os;
-} 
+}
 
-var server=document.getElementById('browserman').getAttribute('data-server');
 if (window.mocha) {
 	new Browserman({
 		type: 'mocha',
-		instance: window.mocha,
-		server:	server
-
+		instance: window.mocha
 	}).init();
 } else {
 	new Browserman({
 		type: 'plain',
-		instance: window,
-		server:server
+		instance: window
 	}).init();
 }

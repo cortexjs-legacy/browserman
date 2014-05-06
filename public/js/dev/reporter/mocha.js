@@ -30,5 +30,4 @@ exports.run = function(options) {
 	}
 
 	mocha.reporter(Reporter);
-	mocha.run();
 }
