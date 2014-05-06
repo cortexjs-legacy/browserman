@@ -72,7 +72,7 @@ Browserman.prototype.init = function() {
 					});
 				} else {
 					socket.emit('done', result);
-					setTimeout(window.close, 500);
+					//setTimeout(window.close, 500);
 				}
 				clearInterval(interval);
 			}, 200);

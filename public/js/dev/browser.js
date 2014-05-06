@@ -17,7 +17,6 @@ socket.on('connect', function() {
 
 socket.on('job', function(job) {
 	console.log('job arrive');
-	console.log(job)
 	if (job.html) {
 		testHtml(job.html,job.jobId);
 	} else if (job.url) {
@@ -39,7 +38,7 @@ function testUrl(url) {
 }
 
 function testHtml(html,jobId) {
-	var serverAddress='localhost:9000';
+	var serverAddress='browserman.dp:9000';
 	var win = window.open('/test.html?jobId=',jobId);
 	var doc = win.document;
 	doc.write(html);
