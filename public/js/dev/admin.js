@@ -43,6 +43,10 @@ app.controller("Controller", ["$scope", "$http",
 		});
 
 		$scope.test = function(url) {
+			if(url==='reload'){
+				socket.emit('reload');
+				return;
+			}
 			if (!isValidUrl(url)) {
 				alert('invalid url');
 				return;

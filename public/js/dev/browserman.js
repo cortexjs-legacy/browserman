@@ -18,12 +18,13 @@ function Browserman(options) {
 
 Browserman.prototype.init = function() {
 	var node = document.getElementById('browserman');
-	
+
 	var server = node.getAttribute('data-server');
 	var jobId = node.getAttribute('data-jobid');
 	var screenshot = node.getAttribute('data-screenshot');
 
 	var connected = false;
+	var completed = false;
 
 	var self = this;
 
@@ -31,10 +32,7 @@ Browserman.prototype.init = function() {
 		return;
 	}
 
-	var socket = io.connect('http://' + server + '/tester');
-	socket.on('connect', function() {
-		connected = true;
-	});
+	// init reporter
 	var result = {
 		jobId: jobId,
 		browser: {
@@ -57,27 +55,37 @@ Browserman.prototype.init = function() {
 			result.data.failures.push(data);
 		},
 		end: function() {
-			var interval = setInterval(function() {
-				if (!connected) {
-					return;
-				}
-				if (screenshot=="true") {
-					html2canvas(document.body, {
-						onrendered: function(canvas) {
-							var img = canvas2image.saveAsJPEG(canvas, true);
-							result.screenshot = img.outerHTML;
-							socket.emit('done', result);
-							setTimeout(window.close, 500);
-						}
-					});
-				} else {
+			completed = true;
+		}
+	});
+
+	// connect to server
+	var socket = io.connect('http://' + server + '/tester');
+	socket.on('connect', function() {
+		connected = true;
+	});
+	
+	// when connected and completed, send result to server
+	var interval = setInterval(function() {
+		if (!connected || !completed) {
+			return;
+		}
+		if (screenshot == "true") {
+			html2canvas(document.body, {
+				onrendered: function(canvas) {
+					var img = canvas2image.saveAsJPEG(canvas, true);
+					result.screenshot = img.outerHTML;
 					socket.emit('done', result);
 					setTimeout(window.close, 500);
 				}
-				clearInterval(interval);
-			}, 200);
+			});
+		} else {
+			socket.emit('done', result);
+			setTimeout(window.close, 500);
 		}
-	});
+		clearInterval(interval);
+	}, 200);
+
 };
 
 function getOS() {

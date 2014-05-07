@@ -24,9 +24,12 @@ socket.on('job', function(job) {
 	}
 });
 
+socket.on('reload',function(){
+	location.reload();
+});
 
 socket.on('disconnect', function() {
-
+	//location.reload();
 });
 
 function testUrl(job) {
@@ -51,6 +54,9 @@ function testHtml(job) {
 	script.setAttribute('data-screenshot', job.requirement.screenshot);
 	script.src = 'http://' + serverAddress + '/public/js/build/browserman.js';
 	head.appendChild(script);
+	setTimeout(function() {
+		win.close();
+	}, 20000);
 }
 
 // function insertAfter(referenceNode, newNode) {

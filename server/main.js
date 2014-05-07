@@ -46,10 +46,14 @@ io.of('/worker').on('connection', function(socket) {
         worker = new Worker(options);
         worker.on('job', function(job) {
             socket.emit('job', job);
+        });
+        worker.once('reload',function(){
+            socket.emit('reload');
         })
         scheduler.registerWorker(worker);
 
     });
+
     socket.on('disconnect', function() {
         scheduler.removeWorker(worker);
     });
@@ -60,6 +64,10 @@ io.of('/client').on('connection', function(socket) {
 
     socket.on('list',function(){
         socket.emit('list:result',scheduler.getAllWorkers());
+    })
+
+    socket.on('reload',function(){
+        scheduler.reloadAllWorkers();
     })
 
     socket.on('test', function(test) {
