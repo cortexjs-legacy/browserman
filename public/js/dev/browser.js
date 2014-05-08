@@ -1,4 +1,4 @@
-var io = require('./lib/socket.io');
+var io = require('socket.io-client');
 var browser = require('bowser').browser;
 
 var socket = io.connect('/worker', {
@@ -7,7 +7,7 @@ var socket = io.connect('/worker', {
 });
 
 socket.on('connect', function() {
-	console.log('connected');
+	location.hash='connected';
 	socket.emit('register', {
 		name: browser.name,
 		version: browser.version,
@@ -16,7 +16,7 @@ socket.on('connect', function() {
 });
 
 socket.on('job', function(job) {
-	console.log('job arrive');
+	location.hash='onjob';
 	if (job.html) {
 		testHtml(job);
 	} else if (job.url) {

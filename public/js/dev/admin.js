@@ -1,6 +1,6 @@
 var angular = require('angular');
 var sf=require('string-format');
-var io = require('./lib/socket.io');
+var io = require('socket.io-client');
 
 var app = angular.module('app', []);
 
@@ -65,7 +65,6 @@ app.controller("Controller", ["$scope", "$http",
 		$http.get('/api/worker').success(function(data) {
 			$scope.workers = data;
 		})
-
 
 		function openScreenshot(title,screenshot){
 			var doc=window.open('_blank').document;

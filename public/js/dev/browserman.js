@@ -1,4 +1,4 @@
-var io = require('./lib/socket.io');
+var io = require('socket.io-client');
 var browser = require('bowser').browser;
 var html2canvas = require('./lib/html2canvas');
 var canvas2image = require('./lib/canvas2image');

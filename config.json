@@ -1,11 +1,11 @@
 {
 	"server": {
 		"main": {
-			"address": "localhost",
+			"host": "localhost",
 			"port": 9000
 		},
-			"proxy": {
-			"address": "localhost",
+		"proxy": {
+			"host": "localhost",
 			"port": 9001
 		}
 	}
