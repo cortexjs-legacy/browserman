@@ -59,10 +59,6 @@ function testHtml(job) {
 	}, 20000);
 }
 
-// function insertAfter(referenceNode, newNode) {
-//     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-// }
-
 function getOS() {
 	var os = "Unknown OS";
 	if (navigator.appVersion.indexOf("Win") != -1) os = "windows";
@@ -70,4 +66,4 @@ function getOS() {
 	if (navigator.appVersion.indexOf("X11") != -1) os = "unix";
 	if (navigator.appVersion.indexOf("Linux") != -1) os = "linux";
 	return os;
-}
+}	

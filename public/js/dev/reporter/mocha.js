@@ -20,7 +20,10 @@ exports.run = function(options) {
 				title: test.title,
 				fullTitle: test.fullTitle(),
 				duration: test.duration,
-				error: err.message
+				err: {
+					message:err.message,
+					stack:err.stack
+				}
 			});
 		});
 
