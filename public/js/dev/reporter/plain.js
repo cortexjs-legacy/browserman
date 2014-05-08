@@ -10,7 +10,10 @@ exports.run = function(options) {
 			title: error,
 			fullTitle: error,
 			duration: 0,
-			error: 'ERR:' + error + ' LINE:' + line
+			err: {
+				message: 'URL:' + url + ' LINE:' + line,
+				stack: ''
+			}
 		})
 	};
 
