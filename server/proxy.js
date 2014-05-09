@@ -10,7 +10,7 @@ var app = express();
 app.configure(function() {
     app.use(function handleInjection(req, res, next) {
         if (req.query.browserman_jobid) {
-            logger.debug('[proxy] injection: %s',req.url);
+            logger.silly('[proxy] injection: %s',req.url);
             inject(req.url, {
                 'data-server':config.getMainServerAddress(),
                 'data-jobid':req.query.browserman_jobid,
@@ -23,7 +23,7 @@ app.configure(function() {
         }
     });
     app.use(function handelProxy(req, res, next) {
-        logger.debug('[proxy] normal: %s',req.url);
+        logger.silly('[proxy] normal: %s',req.url);
         req.pipe(request(req.url)).on( 'error', function(err){
             logger.error(err,req.url);
             res.end(err.toString());
