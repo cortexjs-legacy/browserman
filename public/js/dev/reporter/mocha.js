@@ -1,9 +1,21 @@
 exports.run = function(options) {
-	var doNothing=function(){};
-	var pass = options.pass||doNothing;
-	var fail = options.fail||doNothing;
-	var end = options.end||doNothing;
+	var doNothing = function() {};
+	var pass = options.pass || doNothing;
+	var fail = options.fail || doNothing;
+	var end = options.end || doNothing;
 	var mocha = options.instance;
+	
+	window.onerror = function(error, url, line) {
+		fail({
+			title: error,
+			fullTitle: error,
+			duration: 0,
+			err: {
+				message: 'URL:' + url + ' LINE:' + line,
+				stack: ''
+			}
+		})
+	};
 
 	function Reporter(runner) {
 
@@ -21,8 +33,8 @@ exports.run = function(options) {
 				fullTitle: test.fullTitle(),
 				duration: test.duration,
 				err: {
-					message:err.message,
-					stack:err.stack
+					message: err.message,
+					stack: err.stack
 				}
 			});
 		});
