@@ -14,7 +14,7 @@
   "author": {
     "name": "ltebean",
     "email": "yucong1118@gmail.com"
-  }
+  },
   "license": "BSD",
   "devDependencies": {
     "gulp": "^3.6.0",
