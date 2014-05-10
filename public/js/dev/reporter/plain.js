@@ -11,7 +11,7 @@ exports.run = function(options) {
 			fullTitle: error,
 			duration: 0,
 			err: {
-				message: 'URL:' + url + ' LINE:' + line,
+				message: 'ERROR:' + error + ' LINE:' + line,
 				stack: ''
 			}
 		})

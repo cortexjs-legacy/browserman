@@ -36,9 +36,13 @@ var server = http.createServer(app);
 function inject(url, dataAttrs, cb) {
     jsdom.env({
         url: url,
+        features:{
+            FetchExternalResources:false,
+            ProcessExternalResources:false
+        },
         done: function(errors, window) {
             if (errors) {
-                console.log(errors);
+                console.dir(errors);
                 return cb(new Error('parsing error'))
             }
             var serverAddress=config.getMainServerAddress();
@@ -52,8 +56,7 @@ function inject(url, dataAttrs, cb) {
                 script.setAttribute(key,dataAttrs[key]);
             }
             head.appendChild(script);
-            var html='<html>'+document.documentElement.innerHTML+'</html>'
-            return cb(null,html);
+            return cb(null,window.document.innerHTML);
         }
     });
 }

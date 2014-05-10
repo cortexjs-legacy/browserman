@@ -8,10 +8,10 @@ exports.run = function(options) {
 	window.onerror = function(error, url, line) {
 		fail({
 			title: error,
-			fullTitle: error,
+			fullTitle: error ,
 			duration: 0,
 			err: {
-				message: 'URL:' + url + ' LINE:' + line,
+				message: 'ERROR:' + error + ' LINE:' + line,
 				stack: ''
 			}
 		})

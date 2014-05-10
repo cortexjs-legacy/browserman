@@ -1,13 +1,20 @@
 {
   "name": "browserman",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "test you code in real browsers",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cortexjs/browserman"
+  },
   "scripts": {
     "start": "node index.js",
     "mac-proxy-on": "sudo sh bin/mac-proxy-on.sh",
     "mac-proxy-off": "sudo sh bin/mac-proxy-off.sh"
   },
-  "author": "",
+  "author": {
+    "name": "ltebean",
+    "email": "yucong1118@gmail.com"
+  }
   "license": "BSD",
   "devDependencies": {
     "gulp": "^3.6.0",
