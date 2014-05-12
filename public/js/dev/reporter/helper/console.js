@@ -28,7 +28,7 @@ exports.takeOverConsole=function(cb) {
 				// Do this for IE
 				var message = Array.prototype.slice.apply(arguments).join(' ')
 				original(message);
-				cb(message);
+				cb(arguments[0]);
 			}
 		}
 	}
