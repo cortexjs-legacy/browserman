@@ -3,12 +3,15 @@ exports.run = function(options) {
 	var pass = options.pass || doNothing;
 	var fail = options.fail || doNothing;
 	var end = options.end || doNothing;
+	var log = options.log || doNothing;
 	var mocha = options.instance;
-	
+
+	require('./helper/console').takeOverConsole(log);
+
 	window.onerror = function(error, url, line) {
 		fail({
 			title: error,
-			fullTitle: error ,
+			fullTitle: error,
 			duration: 0,
 			err: {
 				message: 'ERROR:' + error + ' LINE:' + line,

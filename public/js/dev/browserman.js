@@ -41,6 +41,7 @@ Browserman.prototype.init = function() {
 			os: getOS()
 		},
 		data: {
+			logs : [],
 			passes: [],
 			failures: []
 		}
@@ -48,6 +49,9 @@ Browserman.prototype.init = function() {
 
 	self.reporter[self.type].run({
 		instance: self.instance,
+		log: function(data) {
+			result.data.logs.push(data);
+		},
 		pass: function(data) {
 			result.data.passes.push(data);
 		},
