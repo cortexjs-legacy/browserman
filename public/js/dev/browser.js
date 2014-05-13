@@ -17,11 +17,11 @@ socket.on('connect', function() {
 
 socket.on('job', function(job) {
 	location.hash='onjob';
-	if (job.html) {
-		testHtml(job);
-	} else if (job.url) {
-		testUrl(job);
-	}
+	var win = window.open(job.url);
+	//close the tab in case of misoperation
+	setTimeout(function() {
+		win.close();
+	}, 20000);
 });
 
 socket.on('reload',function(){
@@ -31,33 +31,6 @@ socket.on('reload',function(){
 socket.on('disconnect', function() {
 	//location.reload();
 });
-
-function testUrl(job) {
-	var win = window.open(job.url);
-	//close the tab in case of misoperation
-	setTimeout(function() {
-		win.close();
-	}, 20000);
-}
-
-function testHtml(job) {
-	var serverAddress=job.serverAddress;
-	var win = window.open('');
-	var doc = win.document;
-	doc.write(job.html);
-	var head = doc.getElementsByTagName('head')[0];
-	var script = doc.createElement('script');
-	script.id = 'browserman';
-	script.type = 'text/javascript';
-	script.setAttribute('data-server', serverAddress);
-	script.setAttribute('data-jobid', job.jobId);
-	script.setAttribute('data-screenshot', job.requirement.screenshot);
-	script.src = 'http://' + serverAddress + '/public/js/build/browserman.js';
-	head.appendChild(script);
-	setTimeout(function() {
-		win.close();
-	}, 20000);
-}
 
 function getOS() {
 	var os = "Unknown OS";
