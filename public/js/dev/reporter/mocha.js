@@ -17,7 +17,8 @@ exports.run = function(options) {
 				message: 'ERROR:' + error + ' LINE:' + line,
 				stack: ''
 			}
-		})
+		});
+		end();
 	};
 
 	function Reporter(runner) {
