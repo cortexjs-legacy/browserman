@@ -21,7 +21,7 @@ socket.on('job', function(job) {
 	//close the tab in case of misoperation
 	setTimeout(function() {
 		win.close();
-	}, 20000);
+	}, 40000);
 });
 
 socket.on('reload',function(){
