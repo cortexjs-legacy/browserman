@@ -1,5 +1,5 @@
 var angular = require('angular');
-var sf=require('string-format');
+var sf = require('string-format');
 var io = require('socket.io-client');
 
 var app = angular.module('app', []);
@@ -20,7 +20,7 @@ app.directive('ngEnter', function() {
 app.controller("Controller", ["$scope", "$http",
 	function($scope, $http) {
 
-		$scope.screenshots={}
+		$scope.screenshots = {}
 
 		var socket = io.connect('/client');
 
@@ -28,8 +28,8 @@ app.controller("Controller", ["$scope", "$http",
 			console.log('connected');
 
 			socket.on('done', function(data) {
-				var title='{name}({version}-{os})'.format(data.browser);
-				openScreenshot(title,data.screenshot);
+				var title = '{name}({version}-{os})'.format(data.browser);
+				openScreenshot(title, data.screenshot);
 			});
 
 
@@ -43,7 +43,7 @@ app.controller("Controller", ["$scope", "$http",
 		});
 
 		$scope.test = function(url) {
-			if(url==='reload'){
+			if (url === 'reload') {
 				socket.emit('reload');
 				return;
 			}
@@ -66,11 +66,11 @@ app.controller("Controller", ["$scope", "$http",
 			$scope.workers = data;
 		})
 
-		function openScreenshot(title,screenshot){
-			var doc=window.open('_blank').document;
-			var html='<html><body>'+screenshot+'</body></html>';
+		function openScreenshot(title, screenshot) {
+			var doc = window.open('_blank').document;
+			var html = '<html><body>' + screenshot + '</body></html>';
 			doc.write(html);
-			doc.title=title;
+			doc.title = title;
 		}
 
 		function isValidUrl(url) {

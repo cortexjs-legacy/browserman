@@ -8,5 +8,6 @@
 			"host": "localhost",
 			"port": 9001
 		}
-	}
+	},
+	"mongouri":"mongodb://192.168.8.43:27017/browserman"
 }

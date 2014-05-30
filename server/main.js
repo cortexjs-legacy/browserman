@@ -5,6 +5,9 @@ var logger = require('../lib/logger');
 var Worker = require('../lib/worker');
 var Job = require('../lib/job');
 var scheduler = require('../lib/scheduler');
+var db = require('../lib/mongo');
+var badge = require('../lib/badge');
+var fs = require('fs');
 
 var app = express();
 app.configure(function() {
@@ -14,16 +17,42 @@ app.configure(function() {
     app.use(app.router);
 });
 
-app.get('/browser',function(req,res){
+app.get('/browser', function(req, res) {
     res.sendfile(path.join(__dirname, '/../public/browser.html'));
-})
+});
 
-app.get('/',function(req,res){
+app.get('/', function(req, res) {
     res.sendfile(path.join(__dirname, '/../public/admin.html'));
-})
+});
 
 app.get('/api/worker', function(req, res) {
     res.send(scheduler.getAllWorkers());
+});
+
+app.get('/api/app/:name', function(req, res) {
+    db.collection('test').find({
+        appName: req.params.name
+    }).toArray(function(err, result) {
+        if (err) {
+            res.send(500)
+        } else {
+            res.send(result[0]);
+        }
+    });
+});
+
+app.get('/api/app/:name/badge', function(req, res) {
+    badge.createImage(req.params.name, function(err, imagePath) {
+        if (err) {
+            res.send(404);
+        } else {
+            var image = path.join(__dirname, '../', imagePath);
+            res.sendfile(image);
+            setTimeout(function() {
+                fs.unlink(image, function(err) {});
+            }, 1000)
+        }
+    })
 })
 
 var server = http.createServer(app);
@@ -48,11 +77,10 @@ io.of('/worker').on('connection', function(socket) {
         worker.on('job', function(job) {
             socket.emit('job', job);
         });
-        worker.once('reload',function(){
+        worker.once('reload', function() {
             socket.emit('reload');
         })
         scheduler.registerWorker(worker);
-
     });
 
     socket.on('disconnect', function() {
@@ -63,11 +91,11 @@ io.of('/worker').on('connection', function(socket) {
 // client who asks for a test
 io.of('/client').on('connection', function(socket) {
 
-    socket.on('list',function(){
-        socket.emit('list:result',scheduler.getAllWorkers());
+    socket.on('list', function() {
+        socket.emit('list:result', scheduler.getAllWorkers());
     })
 
-    socket.on('reload',function(){
+    socket.on('reload', function() {
         scheduler.reloadAllWorkers();
     })
 
