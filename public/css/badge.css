@@ -12,8 +12,7 @@ ul {
 .test {
   margin: 0px;
   float: left;
-  margin: 10px 0px 5px 20px;
-  width: 80px;
+  padding: 10px 13px;
 }
 .test .browser {
   padding: 0px;
