@@ -1,7 +1,6 @@
 body {
-  font-family: "Helvetica Neue", arial, sans-serif;
-  font-weight: 200;
   background-color: #fff;
+  color: #333;
 }
 ul {
   list-style: none;
