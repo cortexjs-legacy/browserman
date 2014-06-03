@@ -51,7 +51,7 @@ function inject(url, dataAttrs, cb) {
             var script = document.createElement('script');
             script.id='browserman';
             script.type = 'text/javascript';
-            script.src = 'http://'+serverAddress+'/public/js/build/browserman.js';
+            script.src = 'http://'+serverAddress+'/public/js/browserman.js';
             for(var key in dataAttrs){
                 script.setAttribute(key,dataAttrs[key]);
             }
