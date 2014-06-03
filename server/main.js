@@ -12,17 +12,17 @@ var fs = require('fs');
 var app = express();
 app.configure(function() {
     app.use(express.bodyParser());
-    app.use('/public', express.static(path.join(__dirname, '/../public/')));
+    app.use('/public', express.static(path.join(__dirname, '/../public/build/')));
     app.use('/temp', express.static(path.join(__dirname, '/../temp/')));
     app.use(app.router);
 });
 
 app.get('/browser', function(req, res) {
-    res.sendfile(path.join(__dirname, '/../public/browser.html'));
+    res.sendfile(path.join(__dirname, '../public/build/browser.html'));
 });
 
 app.get('/', function(req, res) {
-    res.sendfile(path.join(__dirname, '/../public/admin.html'));
+    res.sendfile(path.join(__dirname, '../public/build/admin.html'));
 });
 
 app.get('/api/worker', function(req, res) {

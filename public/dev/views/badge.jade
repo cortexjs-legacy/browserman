@@ -1,0 +1,14 @@
+extends layout/default.jade
+
+block head  
+	+js("/public/js/badge.js")
+	+css("/public/css/badge.css")
+
+block content
+	div.badge
+		div.test(ng-repeat="(browser,versions) in result") 
+			div.browser-name {{browser}}
+			ul.browser
+				li.version-stat(ng-repeat="versionStat in versions")
+					span.status(ng-class="{'pass': versionStat.status == 'pass','fail': versionStat.status == 'fail'}") 
+					span.version {{versionStat.version}}

@@ -1,0 +1,17 @@
+extends layout/default.jade
+
+block head  
+	title Dashboard
+	+css("/public/css/lib/bootstrap.min.css")
+	+css("/public/css/lib/animate.css")
+	+css("/public/css/admin.css")
+	+js("/public/js/admin.js")
+	
+block content  
+	.container
+		.test-area
+			input.form-control(type="text" ng-model="url" ng-enter="test(url)" placeholder="url to test")
+		.browser.well.well-lg(ng-repeat="worker in workers")
+			span.name {{worker.browser.name}}
+			span.version  {{worker.browser.version}} / {{worker.browser.os}}
+

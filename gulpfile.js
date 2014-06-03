@@ -8,31 +8,31 @@ process.on("uncaughtException", function(err) {
 });
 
 gulp.task('stylus', function() {
-	gulp.src(["./public/css/**/*.styl"])
+	gulp.src(["./public/dev/css/**/*.styl"])
 		.pipe(stylus())
-		.pipe(gulp.dest('./public/css'));
+		.pipe(gulp.dest('./public/build/css'));
 });
 
 gulp.task('jade', function() {
-	gulp.src(["./public/views/*.jade"])
+	gulp.src(["./public/dev/views/*.jade"])
 		.pipe(jade())
-		.pipe(gulp.dest("./public/"));
+		.pipe(gulp.dest("./public/build/"));
 
 });
 
 gulp.task('browserify', function() {
-	gulp.src(["./public/js/dev/*.js"])
+	gulp.src(["./public/dev/js/*.js"])
 		.pipe(browserify({
 			debug: true
 		}))
-		.pipe(gulp.dest('./public/js/build/'))
+		.pipe(gulp.dest('./public/build/js'))
 });
 
 
 gulp.task('watch', function() {
-	gulp.watch(["./public/views/**/*.jade"], ['jade']);
-	gulp.watch(["./public/css/**/*.styl"], ['stylus']);
-	gulp.watch(["./public/js/dev/**/*.js"], ['browserify']);
+	gulp.watch(["./public/dev/views/**/*.jade"], ['jade']);
+	gulp.watch(["./public/dev/css/**/*.styl"], ['stylus']);
+	gulp.watch(["./public/dev/js/**/*.js"], ['browserify']);
 });
 
 gulp.task('default', ['stylus', 'jade', 'browserify', 'watch']);

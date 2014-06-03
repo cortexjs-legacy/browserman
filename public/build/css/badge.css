@@ -1,0 +1,38 @@
+body {
+  background-color: #fff;
+  color: #333;
+}
+ul {
+  list-style: none;
+  padding: 0px;
+}
+.badge {
+  position: absolute;
+}
+.test {
+  margin: 0px;
+  float: left;
+  padding: 10px 13px;
+}
+.test .browser {
+  padding: 0px;
+  margin: 5px 0px;
+}
+.test .browser .version-stat {
+  position: relative;
+}
+.test .browser .version-stat .version {
+  margin-left: 14px;
+}
+.status {
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  top: 4px;
+}
+.status.pass {
+  background-color: #008000;
+}
+.status.fail {
+  background-color: #f00;
+}
