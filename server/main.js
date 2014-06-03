@@ -120,7 +120,7 @@ io.of('/client').on('connection', function(socket) {
 // page opened by browser
 io.of('/tester').on('connection', function(socket) {
 
-    socket.on('done', function(data) {
+    socket.once('done', function(data) {
         // console.log(data);
         scheduler.jobDone(data)
     });
