@@ -30,7 +30,6 @@ app.get('/api/worker', function(req, res) {
 });
 
 app.post('/api/test/result', function(req, res) {
-    console.log(req.body)
     scheduler.jobDone(req.body)
 });
 
