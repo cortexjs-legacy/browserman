@@ -17,10 +17,15 @@ var options = {
 describe('Job', function() {
 	describe('#prepare()', function() {
 		it('should be initialized properly', function() {
-			var job = new Job(options)
+			var job = new Job(options);
+			var prepared = false;
+			job.on('prepared', function() {
+				prepared = true;
+			});
 			job.prepare();
 			job.should.have.property('jobId');
 			job.url.should.equal('http://browserman.io/?browserman_jobid=' + job.jobId + '&browserman_screenshot=false');
+			prepared.should.equal(true);
 		});
 	});
 
@@ -36,8 +41,8 @@ describe('Job', function() {
 	describe('#done()', function() {
 		it('should be done properly', function() {
 			var job = new Job(options);
-			var doneCount=0
-			job.on('done',function(data){
+			var doneCount = 0
+			job.on('done', function(data) {
 				doneCount++;
 			})
 			job.prepare();
@@ -52,9 +57,9 @@ describe('Job', function() {
 	describe('#complete()', function() {
 		it('should complete properly', function() {
 			var job = new Job(options);
-			var completed=false;
-			job.on('complete',function(data){
-				completed=true;
+			var completed = false;
+			job.on('complete', function(data) {
+				completed = true;
 			});
 			job.prepare();
 			job.begin(2);
