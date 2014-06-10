@@ -27,8 +27,9 @@ app.configure(function() {
         var r;
         if (req.method === 'POST') {
             r = request.post({
-                uri: url,
-                json: req.body
+                uri: req.url,
+                json: req.body,
+                headers:req.headers
             });
         } else {
             r = request(url);
