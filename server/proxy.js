@@ -70,7 +70,9 @@ function inject(url, dataAttrs, cb) {
             for (var key in dataAttrs) {
                 script.setAttribute(key, dataAttrs[key]);
             }
-            head.appendChild(script);
+            if(head){
+                head.appendChild(script);
+            }
             return cb(null, window.document.innerHTML);
         }
     });
