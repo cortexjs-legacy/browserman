@@ -23,7 +23,7 @@ app.configure(function() {
         }
     });
     app.use(function handelProxy(req, res, next) {
-        logger.silly('[proxy] %s: %s',req.method req.url);
+        logger.silly('[proxy] %s: %s', req.method, req.url);
         var r;
         if (req.method === 'POST') {
             r = request.post({
