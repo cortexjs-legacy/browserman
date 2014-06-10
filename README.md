@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/cortexjs/browserman.svg?branch=master)](https://travis-ci.org/cortexjs/browserman)
+
 Browserman makes it easy to test your javascript code in real browsers.
 
 ### Preparation:
