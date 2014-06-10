@@ -29,6 +29,11 @@ app.get('/api/worker', function(req, res) {
     res.send(scheduler.getAllWorkers());
 });
 
+app.post('/api/test/result', function(req, res) {
+    console.log(req.body)
+    scheduler.jobDone(req.body)
+});
+
 app.get('/api/app/:name', function(req, res) {
     db.collection('test').find({
         appName: req.params.name
@@ -118,17 +123,17 @@ io.of('/client').on('connection', function(socket) {
 });
 
 // page opened by browser
-io.of('/tester').on('connection', function(socket) {
+// io.of('/tester').on('connection', function(socket) {
 
-    socket.once('done', function(data) {
-        // console.log(data);
-        scheduler.jobDone(data)
-    });
+//     socket.once('done', function(data) {
+//         // console.log(data);
+//         scheduler.jobDone(data)
+//     });
 
-    socket.on('disconnect', function() {
+//     socket.on('disconnect', function() {
 
-    });
-});
+//     });
+// });
 
 exports.startOnPort = function(port) {
     server.listen(port);
