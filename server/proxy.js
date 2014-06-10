@@ -4,18 +4,18 @@ var http = require('http');
 var path = require('path');
 var jsdom = require('jsdom');
 var logger = require('../lib/logger');
-var config=require('../lib/config');
+var config = require('../lib/config');
 
 var app = express();
 app.configure(function() {
     app.use(function handleInjection(req, res, next) {
         if (req.query.browserman_jobid) {
-            logger.silly('[proxy] injection: %s',req.url);
+            logger.silly('[proxy] injection: %s', req.url);
             inject(req.url, {
-                'data-server':config.getMainServerAddress(),
-                'data-jobid':req.query.browserman_jobid,
-                'data-screenshot':req.query.browserman_screenshot
-            },function(err,html) {
+                'data-server': config.getMainServerAddress(),
+                'data-jobid': req.query.browserman_jobid,
+                'data-screenshot': req.query.browserman_screenshot
+            }, function(err, html) {
                 return res.send(html);
             });
         } else {
@@ -23,11 +23,25 @@ app.configure(function() {
         }
     });
     app.use(function handelProxy(req, res, next) {
-        logger.silly('[proxy] normal: %s',req.url);
-        req.pipe(request(req.url)).on( 'error', function(err){
-            logger.error(err,req.url);
+        logger.silly('[proxy] %s: %s',req.method req.url);
+        var r;
+        if (req.method === 'POST') {
+            r = request.post({
+                uri: url,
+                json: req.body
+            });
+        } else {
+            r = request(url);
+        }
+
+        req.pipe(r).on('error', function(err) {
+            logger.error(err, req.url);
             res.end(err.toString());
         }).pipe(res);
+        // req.pipe(request(req.url)).on('error', function(err) {
+        //     logger.error(err, req.url);
+        //     res.end(err.toString());
+        // }).pipe(res);
     });
 });
 
@@ -36,27 +50,27 @@ var server = http.createServer(app);
 function inject(url, dataAttrs, cb) {
     jsdom.env({
         url: url,
-        features:{
-            FetchExternalResources:false,
-            ProcessExternalResources:false
+        features: {
+            FetchExternalResources: false,
+            ProcessExternalResources: false
         },
         done: function(errors, window) {
             if (errors) {
                 console.dir(errors);
                 return cb(new Error('parsing error'))
             }
-            var serverAddress=config.getMainServerAddress();
-            var document=window.document;
+            var serverAddress = config.getMainServerAddress();
+            var document = window.document;
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
-            script.id='browserman';
+            script.id = 'browserman';
             script.type = 'text/javascript';
-            script.src = 'http://'+serverAddress+'/public/js/browserman.js';
-            for(var key in dataAttrs){
-                script.setAttribute(key,dataAttrs[key]);
+            script.src = 'http://' + serverAddress + '/public/js/browserman.js';
+            for (var key in dataAttrs) {
+                script.setAttribute(key, dataAttrs[key]);
             }
             head.appendChild(script);
-            return cb(null,window.document.innerHTML);
+            return cb(null, window.document.innerHTML);
         }
     });
 }
