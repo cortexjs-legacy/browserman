@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node index.js",
+    "test": "mocha",
     "mac-proxy-on": "sudo sh bin/mac-proxy-on.sh",
     "mac-proxy-off": "sudo sh bin/mac-proxy-off.sh"
   },
@@ -20,7 +21,9 @@
     "gulp": "^3.6.0",
     "gulp-stylus": "^0.1.0",
     "gulp-jade": "^0.4.2",
-    "gulp-browserify": "~0.5.0"
+    "gulp-browserify": "~0.5.0",
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1"
   },
   "dependencies": {
     "socket.io": "~0.9.16",
