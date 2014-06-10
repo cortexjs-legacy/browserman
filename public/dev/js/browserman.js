@@ -1,8 +1,8 @@
+var io = require('socket.io-client');
 var browser = require('bowser').browser;
-var html2canvas = require('./lib/html2canvas');
-var canvas2image = require('./lib/canvas2image');
-var $ = require('jquery');
 
+//support socket.io jsonp
+window.io = io;
 
 function Browserman(options) {
 	var options = options || {};
@@ -39,7 +39,7 @@ Browserman.prototype.init = function() {
 			os: getOS()
 		},
 		data: {
-			logs: [],
+			logs : [],
 			passes: [],
 			failures: []
 		}
@@ -58,17 +58,26 @@ Browserman.prototype.init = function() {
 		},
 		end: function() {
 			completed = true;
-			$.ajax({
-				type: "POST",
-				url: "/api/test/result",
-				dataType:'json',
-				contentType: "application/json",
-				data: JSON.stringify(result)
-			}).done(function(msg) {
-				setTimeout(window.close, 500);
-			});
+			location.hash='completed';
 		}
 	});
+
+	// connect to server
+	var socket = io.connect('http://' + server + '/tester');
+	socket.on('connect', function() {
+		connected = true;
+		location.hash='connected';
+	});
+	
+	// when connected and completed, send result to server
+	var interval = setInterval(function() {
+		if (!connected || !completed) {
+			return;
+		}
+		socket.emit('done', result);
+		setTimeout(window.close, 1000);
+		clearInterval(interval);
+	}, 300);
 
 };
 
