@@ -67,6 +67,7 @@ Browserman.prototype.init = function() {
 	var socket = io.connect('http://' + server + '/tester');
 	socket.on('connect', function() {
 		connected = true;
+		location.hash = connected;
 	});
 	
 	// when connected and completed, send result to server
