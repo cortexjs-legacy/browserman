@@ -32,7 +32,7 @@ app.configure(function() {
                 headers:req.headers
             });
         } else {
-            r = request(url);
+            r = request(req.url);
         }
 
         req.pipe(r).on('error', function(err) {
