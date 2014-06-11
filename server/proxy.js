@@ -2,9 +2,9 @@ var express = require('express');
 var request = require('request');
 var http = require('http');
 var path = require('path');
-var jsdom = require('jsdom');
 var logger = require('../lib/logger');
 var config = require('../lib/config');
+var cheerio = require('cheerio');
 
 var app = express();
 app.configure(function() {
@@ -29,52 +29,38 @@ app.configure(function() {
             r = request.post({
                 uri: req.url,
                 json: req.body,
-                headers:req.headers
+                headers: req.headers
             });
         } else {
             r = request(req.url);
         }
-
         req.pipe(r).on('error', function(err) {
             logger.error(err, req.url);
             res.end(err.toString());
         }).pipe(res);
-        // req.pipe(request(req.url)).on('error', function(err) {
-        //     logger.error(err, req.url);
-        //     res.end(err.toString());
-        // }).pipe(res);
     });
 });
 
 var server = http.createServer(app);
 
 function inject(url, dataAttrs, cb) {
-    jsdom.env({
-        url: url,
-        features: {
-            FetchExternalResources: false,
-            ProcessExternalResources: false
-        },
-        done: function(errors, window) {
-            if (errors) {
-                console.dir(errors);
-                return cb(new Error('parsing error'))
-            }
-            var serverAddress = config.getMainServerAddress();
-            var document = window.document;
-            var head = document.getElementsByTagName('head')[0];
-            var script = document.createElement('script');
-            script.id = 'browserman';
-            script.type = 'text/javascript';
-            script.src = 'http://' + serverAddress + '/public/js/browserman.js';
-            for (var key in dataAttrs) {
-                script.setAttribute(key, dataAttrs[key]);
-            }
-            if(head){
-                head.appendChild(script);
-            }
-            return cb(null, window.document.innerHTML);
+    request(url, function(error, response, body) {
+        console.log(response.statusCode);
+        if (error || response.statusCode !== 200) {
+            return cb(new Error());
         }
+        $ = cheerio.load(body);
+        var serverAddress = config.getMainServerAddress();
+        var script = $('<script/>');
+        script.attr('id', 'browserman');
+        script.attr('type', 'text/javascript');
+        script.attr('src', 'http://' + serverAddress + '/public/js/browserman.js');
+        for (var key in dataAttrs) {
+            script.attr(key, dataAttrs[key]);
+        }
+        $('head').append(script);
+        console.log($.html)
+        return cb(null, $.html());
     });
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "browserman",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "test you code in real browsers",
   "repository": {
     "type": "git",
@@ -34,7 +34,6 @@
     "semver": "~2.2.1",
     "bowser": "~0.7.1",
     "angular": "~1.2.16",
-    "jsdom": "^0.10.5",
     "string-format": "^0.2.1",
     "socket.io-client": "^0.9.16",
     "mongodb": "^1.4.5",
